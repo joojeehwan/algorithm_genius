@@ -42,11 +42,10 @@
 
 ### BOJ
 
-- [2615번: 오목](https://www.acmicpc.net/problem/2615)
-- [15686번: 치킨 배달](https://www.acmicpc.net/problem/15686)
+- [2615 : 오목](https://www.acmicpc.net/problem/2615)
+- [15686 : 치킨 배달](https://www.acmicpc.net/problem/15686)
 
 ### Programmers
 
-- [소수 찾기](https://programmers.co.kr/learn/courses/30/lessons/42839)
-
-- [카펫](https://programmers.co.kr/learn/courses/30/lessons/42842)
+- [42839 : 소수 찾기](https://programmers.co.kr/learn/courses/30/lessons/42839)
+- [42842 : 카펫](https://programmers.co.kr/learn/courses/30/lessons/42842)
