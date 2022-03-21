@@ -35,7 +35,6 @@ def solution(numbers):
         numbers = sorted(numbers)
         dfs(numbers, i, '', used)
 
-    nums = set(nums)            # 중복 제거
     answer = 0
     for num in nums:
         answer += check(num)
