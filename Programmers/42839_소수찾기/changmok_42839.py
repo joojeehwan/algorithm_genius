@@ -1,32 +1,23 @@
 from itertools import permutations
 
 def solution(numbers):
-    answer = 0
     length = len(numbers)
-    primes = [True] * (10 ** length + 1)
-    checked = [False] * (10 ** length + 1)
-    
-    primes[0] = False
-    primes[1] = False
-    
-    for i in range(2, int((10 ** length) ** (1 / 2))+1):
-        if not primes[i]:
-            continue
-        else:
-            j = i * 2
-            while j <= 10 ** length:
-                primes[j] = False
-                j += i
-    
+
+    # 순열 생성
+    permutationset = set() # 중복을 포함하지 않기 위해 set()로 선언
     for l in range(1, length + 1):
         strnums = permutations(numbers, l)
         for strnum in strnums:
-            strnum = ''.join(strnum)
-            num = int(strnum)
-            if checked[num]:
-                continue
-            checked[num] = True
-            if primes[num]:
-                answer += 1
+            num = int(''.join(strnum))
+            permutationset.add(num)
+
+    # 에라토스테네스의 체
+    permutationset -= set([0, 1])
+    for i in range(2, int(max(permutationset) ** 0.5) + 1):
+        permutationset -= set(range(i * 2, max(permutationset) + 1, i))
+
+    answer = len(permutationset)
     
     return answer
+
+print(solution("011"))
