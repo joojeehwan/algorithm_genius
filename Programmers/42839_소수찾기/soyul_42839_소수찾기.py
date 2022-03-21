@@ -13,13 +13,13 @@ def check(num):
 
 def solution(numbers):
 
-    nums = []
+    nums = set()
 
     # 모든 숫자 조합을 만들어줌
     def dfs(numbers, n, num, used):
 
         if len(num) >= n:
-            nums.append(int(num))
+            nums.add(int(num))
             return
 
         for i in range(len(numbers)):
@@ -35,10 +35,7 @@ def solution(numbers):
         numbers = sorted(numbers)
         dfs(numbers, i, '', used)
 
-    nums = set(nums)            # 중복 제거
     answer = 0
     for num in nums:
         answer += check(num)
     return answer
-
-solution('543')
