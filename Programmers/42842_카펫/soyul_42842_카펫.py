@@ -10,6 +10,7 @@ def solution(brown, yellow):
         if (i[0] + i[1]) * 2 + 4 == brown:
             answer.append(i[0] + 2)
             answer.append(i[1] + 2)
+            break
     return answer
 
 print(solution(10, 2))
