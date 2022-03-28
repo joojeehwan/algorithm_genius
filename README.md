@@ -41,9 +41,80 @@
     </td>
   </tr>
 </table>
-|                          |                                                              |                                                            |                                                     |                                                              |                    |
-| ------------------------ | ------------------------------------------------------------ | ---------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------ | ------------------ |
-| 날짜                     | 문제1                                                        | 문제2                                                      | 문제3                                               | 문제4                                                        | 코드리뷰           |
-| 1주차(22.03.21~22.03.25) | [42839 : 소수 찾기](https://programmers.co.kr/learn/courses/30/lessons/42839) | [15686 : 치킨 배달](https://www.acmicpc.net/problem/15686) | [2615 : 오목](https://www.acmicpc.net/problem/2615) | [42842 : 카펫](https://programmers.co.kr/learn/courses/30/lessons/42842) | :white_check_mark: |
-| 2주차(22.03.28~22.04.01) | [16953 : A → B](https://www.acmicpc.net/problem/16953)       |                                                            |                                                     |                                                              |                    |
-| 3주차(22.04.04~22.04.08) |                                                              |                                                            |                                                     |                                                              |                    |
+
+
+
+
+<table>
+  <tr>
+    <td align="center">
+      날짜
+    </td>
+    <td align="center">
+      문제1
+    </td>
+    <td align="center">
+      문제2
+    </td>
+    <td align="center">
+      문제3
+    </td>
+    <td align="center">
+      문제4
+    </td>
+    <td align="center">
+      코드리뷰
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      1주차(22.03.21~22.03.25)
+    </td>
+    <td align="center">
+      <a href="https://programmers.co.kr/learn/courses/30/lessons/42839">42839 : 소수 찾기</a>
+    </td>
+    <td align="center">
+        <a href="https://www.acmicpc.net/problem/15686">15686 : 치킨 배달</a>
+    </td>
+    <td align="center">
+    <a href="https://www.acmicpc.net/problem/2615">2615 : 오목</a>
+    </td>
+    <td align="center">
+    <a href="https://programmers.co.kr/learn/courses/30/lessons/42842">42842 : 카펫</a>
+    </td>
+    <td align="center">
+      ✅
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      2주차(22.03.28~22.04.01)
+    </td>
+    <td align="center">
+    <a href="https://www.acmicpc.net/problem/16953">16953 : A → B
+    </td>
+    <td align="center">
+    </td>
+    <td align="center">
+    </td>
+    <td align="center">
+    </td>
+    <td align="center">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      3주차(22.04.04~22.04.08)
+    </td>
+    <td align="center"> 
+    </td>
+    <td align="center">
+    </td>
+    <td align="center">
+    </td>
+    <td align="center">
+    </td>
+    <td align="center">
+    </td>
+  </tr>
+</table>
