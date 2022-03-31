@@ -7,13 +7,14 @@ def check(word1, word2):                        # 단어 두개가 다른 알파
 
 def dfs(now_word, cnt, target, words, used):
 
-    ans = 0
+    ans = 986523
 
     if cnt >= len(words):               # 체크한 숫자가 주어진 단어의 개수보다 많으면 불가능
         if now_word != target:
             return 0
 
     if now_word == target:              # 타켓단어가 만들어지면 끝
+        # print(cnt)
         return cnt
 
     for i in range(len(words)):
@@ -23,7 +24,7 @@ def dfs(now_word, cnt, target, words, used):
             continue
 
         used[i] = 1
-        ans = dfs(words[i], cnt + 1, target, words, used)
+        ans = min(ans, dfs(words[i], cnt + 1, target, words, used))
         used[i] = 0
 
     return ans
@@ -35,7 +36,6 @@ def solution(begin, target, words):
     answer = dfs(begin, 0, target, words, used)
     return answer
 
-
 """ 이전코드 (전역변수 사용)
 def check(word1, word2):                        # 단어 두개가 다른 알파벳이 몇 개인지 체크하는 함수
     cnt = 0
@@ -44,7 +44,7 @@ def check(word1, word2):                        # 단어 두개가 다른 알파
             cnt += 1
     return cnt
 
-ans = 0
+ans = 9743235
 
 def dfs(now_word, cnt, target, words, used):
     global ans
@@ -54,7 +54,7 @@ def dfs(now_word, cnt, target, words, used):
             return
 
     if now_word == target:              # 타켓단어가 만들어지면 끝
-        ans = cnt
+        ans = min(ans, cnt)
         return
 
     for i in range(len(words)):
@@ -74,4 +74,6 @@ def solution(begin, target, words):
 
     answer = dfs(begin, 0, target, words, used)
     return answer
+
+print(solution('hit', 'cog', ["dot", "dog", "lot", "log", "cog", "hot", "dat", "hat", "hit"]))
 """
