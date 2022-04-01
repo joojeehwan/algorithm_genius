@@ -56,6 +56,8 @@ def is_Prime(Num):
 def dfs(lev, word, max_Len, visited, numbers):
     # 종료 조건
     if lev == max_Len:  # 중복제거
+        
+        #word 자체에서 형변환
         if word not in numbers:
             if word[0] == "0":
                 numbers.append(word[1:])

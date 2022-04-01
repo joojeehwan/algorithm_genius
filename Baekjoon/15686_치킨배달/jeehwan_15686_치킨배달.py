@@ -54,57 +54,56 @@ for r in range(M):
 print(ans)
 
 
-'''
-from sys import stdin
-from math import inf
-
-
-def manhattan_dist(h, c):
-    return abs(h[X] - c[X]) + abs(h[Y] - c[Y])
-
-
-def dfs(idx, selected):
-    global answer
-
-    if idx > len(chicken):
-        return
-
-    if selected == m:
-        sum_distance = 0
-        for house in houses:
-            min_distance = inf
-            for c_idx, value in enumerate(chicken):
-                if not check[c_idx]:
-                    continue
-                min_distance = min(min_distance, manhattan_dist(house, value))
-            sum_distance += min_distance
-        answer = min(answer, sum_distance)
-        return
-
-    check[idx] = True
-    dfs(idx + 1, selected + 1)
-    check[idx] = False
-    dfs(idx + 1, selected)
-
-
-if __name__ == '__main__':
-    X, Y = 0, 1
-    n, m = map(int, stdin.readline().split())
-    graph = [list(map(int, stdin.readline().split())) for _ in range(n)]
-    houses, chicken = [], []
-    answer = inf
-
-    for i in range(n):
-        for j in range(n):
-            if graph[i][j] == 1:
-                houses.append([i + 1, j + 1])
-            elif graph[i][j] == 2:
-                chicken.append([i + 1, j + 1])
-                
-    check = [False] * (len(chicken) + 1)
-    dfs(0, 0)
-    print(answer)
- 
- 이 풀이와 차이가 뭐지,,?!!?
-
-'''
+# from sys import stdin
+# from math import inf
+#
+#
+# def manhattan_dist(h, c):
+#     return abs(h[X] - c[X]) + abs(h[Y] - c[Y])
+#
+#
+# def dfs(idx, selected):
+#     global answer
+#
+#     if idx > len(chicken):
+#         return
+#
+#     if selected == m:
+#         sum_distance = 0
+#         for house in houses:
+#             min_distance = inf
+#             for c_idx, value in enumerate(chicken):
+#                 if not check[c_idx]:
+#                     continue
+#                 min_distance = min(min_distance, manhattan_dist(house, value))
+#             sum_distance += min_distance
+#         answer = min(answer, sum_distance)
+#         return
+#
+#     check[idx] = True
+#     dfs(idx + 1, selected + 1)
+#     check[idx] = False
+#     dfs(idx + 1, selected)
+#
+#
+# if __name__ == '__main__':
+#     X, Y = 0, 1
+#     n, m = map(int, stdin.readline().split())
+#     graph = [list(map(int, stdin.readline().split())) for _ in range(n)]
+#     houses, chicken = [], []
+#     answer = inf
+#
+#     for i in range(n):
+#         for j in range(n):
+#             if graph[i][j] == 1:
+#                 houses.append([i + 1, j + 1])
+#             elif graph[i][j] == 2:
+#                 chicken.append([i + 1, j + 1])
+#
+#     check = [False] * (len(chicken) + 1)
+#     dfs(0, 0)
+#     print(answer)
+#
+#  이 풀이와 차이가 뭐지,,?!!?
+#
+# '''
