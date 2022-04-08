@@ -1,5 +1,8 @@
 from collections import deque
 
+# 그저 매 칸마다 bfs를 따로 계속 도는 코드일 뿐입니다.
+# 그래서 pypy3로 채점해야 통과 됨.
+
 def bfs(i, j):
     reach = [[-1] * c for _ in range(r)]
     furthest = 0
