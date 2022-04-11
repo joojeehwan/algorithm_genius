@@ -31,7 +31,8 @@ def bfs(row, col):
                 #그리고 육지이면서 한번도 안들린 곳
                 if MAP[next_row][next_col] == "L" and visited[next_row][next_col] == False:
                     visited[next_row][next_col] = visited[now_row][now_col] + 1
-                    num = max(num, visited[next_row][next_col]) #최단 거리이면서 가장 멀리 이동할 수 있는 최단 거리
+                    # num = max(num, visited[next_row][next_col]) #최단 거리이면서 가장 멀리 이동할 수 있는
+                    num = visited[next_row][next_col]
                     q.append([next_row, next_col])
     return num - 1
 N, M = map(int, input().split())
