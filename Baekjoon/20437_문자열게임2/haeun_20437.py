@@ -18,7 +18,7 @@ for tc in range(T):
     over_K = []
 
     for i in range(length):
-        # dictionary에 있다면 index 위치를 배열에 추가한다.
+        # dictionary 있다면 index 위치를 배열에 추가한다.
         if W[i] in alphabet_dict.keys():
             alphabet_dict[W[i]].append(i)
         else:
