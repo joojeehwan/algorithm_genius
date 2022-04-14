@@ -21,7 +21,7 @@ def solution(user_id, banned_id):
                 can[i].append(user_id[j])
 
     lst = []
-    pd = list(product(*can))
+    pd = list(product(*can))                            # [['frodo', 'fradi'], ['abc123']] > [('frodo', 'abc123'), ('fradi', 'abc123')]
     for p in pd:
         if len(set(p)) != len(banned_id):                       # 중복된 게 있다면
             continue
