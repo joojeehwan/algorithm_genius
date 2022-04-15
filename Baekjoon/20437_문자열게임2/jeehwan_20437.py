@@ -1,8 +1,8 @@
 
 
 
-#default dict를 사용하지 않으면!
-
+# # default dict를 사용하지 않으면!
+#
 # letters = "dongdongfather"
 #
 #
