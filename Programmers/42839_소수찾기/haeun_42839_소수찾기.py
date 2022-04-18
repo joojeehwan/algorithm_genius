@@ -1,5 +1,5 @@
 from itertools import permutations
-
+# permutations : 순서 중요, combinations : 순서 상관 X
 
 def solution(numbers):
     answer = 0
@@ -25,6 +25,7 @@ def solution(numbers):
                 # 예로 10을 1이 아닌 2로 나눈 나머지가 0이라는 점에서 소수가 아니게 된다.
                 if number % i == 0:
                     palin = False
+                    break
             # 반복문을 다 돌았는데 소수라는 가정이 바뀌지 않았으면 소수이므로 answer수 증가
             if palin:
                 answer += 1
