@@ -1,3 +1,4 @@
+# 실행시간 1,092ms 메모리 74,676kb
 import copy
 from collections import deque
 
