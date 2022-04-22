@@ -1,6 +1,8 @@
 # import sys
 # sys.stdin = open('input.txt', 'r')
-
+"""
+메모리 77056 실행시간 483
+"""
 T = int(input())
 
 dr = [-1, 1, 0, 0]
