@@ -115,3 +115,75 @@ dfs(0)
 print(cnt)
 
 '''
+
+
+#갓세진 풀이
+
+'''
+
+우상좌하 대각선의 row, col의 인덱스끼리 더하면 항상 같은 값이 나오는 성질 이용
+좌상우하 대각선으 row, col의 인덱스끼리 빼면 항상 같은 값이 나오는 성질 이용
+
+
+체스판에서 나올수 있는 대각선의 가짓수는 2 * n - 1 직접 대각선으로 몇개 나오는지 체크! 
+
+그 나올 수 있는 대각선을 일차원 배열로 생각 index는 몇번쨰 대각선인지, 그 안의 값은 그 대각선에 값이 하나라도 있고 없고를 나타냄! 
+
+같은 대각선상에 있는 것은 위의 2가지 성질에 의해서 인덱스를 뺴거나 더하면 규칙이 나옴! 이것을 이용함! 
+
+'''
+#N_Queen
+
+def dfs(now):
+
+    #now번쨰 줄에 말을 배치한다.
+
+    if now >= N:
+        #맨 끝줄까지 말을 배치 했다.
+        #가지치기를 모두 통과하여 "정상적인 상태이다"
+        global ans
+        ans += 1
+        return
+
+    for col in range(N):
+        if check_col[col]: # 이 열은 앞에서 사용 중이다.
+            continue
+
+        if check_ru_ld[now + col]: # 이 대각선은 앞에서 사용 중이다.
+            continue
+
+        if check_lu_rd[now - col]:
+            continue
+
+        check_col[col] = True
+        check_ru_ld[now + col] = True
+        check_lu_rd[now - col] = True
+
+        MAP[now][col] = 1
+        dfs(now + 1)
+        # 다음 줄로 넘어가라!
+
+        MAP[now][col] = 0
+        #col위치에 두는 방법은 다 해봣으니 기록을 삭제
+
+        check_col[col] = False
+        check_ru_ld[now + col] = False
+        check_lu_rd[now - col] = False
+
+
+
+N = int(input())
+
+check_col = [False] * N
+
+check_ru_ld = [False] * (2 * N -1) # 어떤 대각선(오른쪽 위 ->왼쪽 아래)를 사용했는가?
+
+check_lu_rd = [False] * (2 * N - 1)
+
+ans = 0
+
+MAP = [[0] * N for _ in range(N)]
+
+dfs(0)
+
+print(ans)
