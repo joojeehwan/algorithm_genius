@@ -1,5 +1,7 @@
 """
-
+92ms 32572kb
+주사위 회전하는 index 계산하면 되는건데
+잘 해놓고 한두개 틀려서 디버깅하느라 시간 겁나 뺏김~!~!~!~!
 """
 from collections import deque
 
