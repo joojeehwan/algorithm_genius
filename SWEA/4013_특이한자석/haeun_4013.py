@@ -52,7 +52,7 @@ for tc in range(T):
         for idx in range(4):
             # 시계방향
             if magnet_directions[idx] == 1:
-                magnets[idx] =[magnets[idx][7]] + magnets[idx][:7]
+                magnets[idx] = [magnets[idx][7]] + magnets[idx][:7]
             elif magnet_directions[idx] == -1:
                 magnets[idx] = magnets[idx][1:] + [magnets[idx][0]]
             # print(f"돌아간 {idx+1} 번째 자석 모양 : ", magnets[idx])
