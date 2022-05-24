@@ -1,18 +1,28 @@
+"""
+https://chelseashin.tistory.com/31
+
+47개까지 틀리고 디버깅 해봐도 왜 틀렸는지 모르겠어서 답을 찾아봤는데
+내가 생각하는 차이점은 방향 전환을 너무 헷갈리게 만들어서 잘 못 만든 것 같음
+"""
+
 import sys
 sys.stdin = open('input.txt', 'r')
 
 
 T = int(input())
 
-# 상 좌 하 우
-dr = [-1, 0, 1, 0]
-dc = [0, -1, 0, 1]
+# 상 하 좌 우
+dr = [-1, 1, 0, 0]
+dc = [0, 0, -1, 1]
 
 # 방향 전환 2차원 배열
-turns = [[0] * 4 for _ in range(5)]
-turns[0][1], turns[2][3], turns[3][2] = -1, -1, -1
-turns[0][2], turns[1][1], turns[2][0] = 1, 1, 1
-turns[1][0], turns[3][3] = 3, -3
+turns = (
+    (1, 3, 0, 2),
+    (3, 0, 1, 2),
+    (2, 0, 3, 1),
+    (1, 2, 3, 0),
+    (1, 0, 3, 2),
+         )
 
 
 for tc in range(T):
@@ -29,64 +39,51 @@ for tc in range(T):
         for c in range(N):
             if MAP[r][c] > 5:
                 worm_idx = MAP[r][c]
+                # 있는 웜홀이면 추가
                 if wormholes.get(worm_idx):
                     wormholes[worm_idx].append((r, c))
+                # 처음이면 생성
                 else:
                     wormholes[worm_idx] = [(r, c)]
             elif MAP[r][c] == 0:
+                # 갈 수 있는 빈칸들만 따로 저장
                 start_points.append((r, c))
 
     # 갈 수 있는 위치들 * 4방향
     for start in start_points:
         start_row, start_col = start[0], start[1]
-        for direct in range(4):
-            # 디버깅용 표기
-            visited = [[0] * N for _ in range(N)]
-            visited[start_row][start_col] = 1
-            # find_answer(start_row, start_col, direct, 0)
-            direction = direct
+        for start_direct in range(4):
+            # 초기화
+            direction = start_direct
             count = 0
-            now_row, now_col = start_row, start_col
+            row, col = start_row, start_col
 
             while True:
-                next_row, next_col = now_row + dr[direction], now_col + dc[direction]
+                # next, now 나눴는데 그냥 합침
+                row += dr[direction]
+                col += dc[direction]
 
                 # 벽을 넘는 경우
-                if not (0 <= next_row < N and 0 <= next_col < N):
-                    # 뒤돌아가
-                    direction = (direction + 2) % 4
+                if not (0 <= row < N and 0 <= col < N):
                     count += 1
-                    continue
-
-                number = MAP[next_row][next_col]
-                # 끝나는 경우
-                if number == -1 or (next_row == start_row and next_col == start_col):
-                    answer = max(answer, count)
-                    visited[next_row][next_col] = 'F'
-                    break
-
-                if number == 0:
-                    visited[next_row][next_col] = visited[now_row][now_col] + 1
-                    now_row, now_col = next_row, next_col
-                elif 0 < number < 6:
-                    count += 1
-                    # 방향 바꾸기
-                    if not turns[number-1][direction]:
-                        # 뒤집기
-                        direction = (direction + 2) % 4
-                    else:
-                        # 90도 회전
-                        direction = direction + turns[number-1][direction]
-                    visited[next_row][next_col] = visited[now_row][now_col] + 1
-                    now_row, now_col = next_row, next_col
+                    # 반대로 튕겨나가게, 5번 블록이랑 부딪힌 셈
+                    direction = turns[4][direction]
                 else:
+                    num = MAP[row][col]
+                    # 끝나는 경우
+                    if num == -1 or (row == start_row and col == start_col):
+                        answer = max(answer, count)
+                        break
+                    # 블록인 경우
+                    elif 1 <= num <= 5:
+                        count += 1
+                        direction = turns[num-1][direction]
                     # 웜홀인 경우
-                    visited[next_row][next_col] = visited[now_row][now_col] + 1
-                    if wormholes[number][0] == (next_row, next_col):
-                        now_row, now_col = wormholes[number][1]
-                    else:
-                        now_row, now_col = wormholes[number][0]
-            print(f"출발지점 : {start} ||| 출발 방향 : {direct} ||| 현재위치 : {next_row, next_col} ||| 최종 점수 : {count}")
+                    elif 6 <= num <= 10:
+                        # 지금 번호와 같지만 위치가 다른 웜홀로 이동
+                        if wormholes[num][0] == (row, col):
+                            row, col = wormholes[num][1][0], wormholes[num][1][1]
+                        else:
+                            row, col = wormholes[num][0][0], wormholes[num][0][1]
 
     print(f"#{tc+1} {answer}")
-
