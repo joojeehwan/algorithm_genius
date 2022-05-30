@@ -67,3 +67,5 @@ def tracking(graph, visited, info, sheep, wolf):
                     else:
                         tracking(graph, visited, info, sheep + 1, wolf)
                         visited[e] = 0
+
+
