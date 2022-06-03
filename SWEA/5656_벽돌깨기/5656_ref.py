@@ -18,8 +18,8 @@ def dfs(bricks, now_turn, all_brick_cnt):
         return
     if now_turn >= N:
         # 구슬을 N개 다 썼다.
-        if lefts > cnt:
-            lefts = cnt
+        if lefts > all_brick_cnt:
+            lefts = all_brick_cnt
         return
     if not all_brick_cnt:
         # 애초부터 벽돌이 없었다.
