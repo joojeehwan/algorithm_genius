@@ -32,6 +32,3 @@ for tc in range(T):
     # 정렬
     hex_list.sort()
     print(f"#{tc+1} {hex_list[-K]}")
-
-
-
