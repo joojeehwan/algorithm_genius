@@ -60,7 +60,7 @@ def solution(m, n, puddles):
     MAP = [[0] * m for _ in range(n)]
     MAP[0][0] = 1
     # 2. 초기값 구성
-    # q = deque()
+    # q = deque([])
     # q.append((0, 0))
     q = deque([(0, 0)])
     while q:
