@@ -1,37 +1,37 @@
 
 #dfs 풀이
 
-# from math import inf
+from math import inf
 
 
-# answer = inf
+answer = inf
 
 
-# def dfs(n, cnt, num, number):
-#     global answer
+def dfs(n, cnt, num, number):
+    global answer
 
-#     if answer < inf and cnt > answer:
-#         return
-        
-#     if cnt > 8:
-#         return
+    if answer < inf and cnt > answer:
+        return
 
-#     if num == number:
-#         answer = min(answer, cnt)
-#         return
+    if cnt > 8:
+        return
 
-#     next_num = 0
-#     for i in range(8):
-#         next_num = next_num * 10 + n
-#         dfs(n, cnt + 1 + i, num + next_num, number)
-#         dfs(n, cnt + 1 + i, num - next_num, number)
-#         dfs(n, cnt + 1 + i, num * next_num, number)
-#         dfs(n, cnt + 1 + i, num / next_num, number)
+    if num == number:
+        answer = min(answer, cnt)
+        return
+
+    next_num = 0
+    for i in range(8):
+        next_num = next_num * 10 + n
+        dfs(n, cnt + 1 + i, num + next_num, number)
+        dfs(n, cnt + 1 + i, num - next_num, number)
+        dfs(n, cnt + 1 + i, num * next_num, number)
+        dfs(n, cnt + 1 + i, num / next_num, number)
 
 
-# def solution(N, number):
-#     dfs(N, 0, 0, number)
-#     return -1 if answer == inf else answer
+def solution(N, number):
+    dfs(N, 0, 0, number)
+    return -1 if answer == inf else answer
 
 
 def solution(N, number):
@@ -40,7 +40,7 @@ def solution(N, number):
   for i in range(1, 9): # N 조건이자 사용 횟수 조건(8보다 크면 -1 리턴)
     case = []
     for j in range(1, i):
-        for k in dp_table[j]: # j번 사용한 경우의 수 원소 iteration
+        for k in dp_table[j]: # j번 사용한 경우의 수 원소 반복
           for l in dp_table[i - j]: # i-j번 사용한 경우의 수 원소 iteration
               case.append(k + l) # 더하기
               if k - l >= 0: 
