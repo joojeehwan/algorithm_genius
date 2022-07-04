@@ -1,40 +1,53 @@
-import sys
-
-input = sys.stdin.readline
-
-target = int(input())
-
-n = int(input())
-
-broken = list(map(int, input().split()))
-
-#현재 채널에서 + 혹은 -만 사용!하는 경우
-min_count = abs(100 - target)
-
-#이렇게 적는것이 포인트
-for nums in range(1000001):
-    nums = str(nums)
-    #왜 str로 바꾸나?! nums 중에서 하나의 숫자만 뽑기 위해서! 그렇게 한 것!
-    # str로 안바꾸면 하나의 숫자를 뽑을 수가 없으니깐!
-    # 각 숫자 하나씪 확인!
-    for j in range(len(nums)):
-        # 각 숫자가 고장났는지 확인 후, 고장 났으면 break
-        if int(nums[j]) in broken:
-            break
-
-        #고장난 숫자 없이 마지막 자리까지 왔다면 min_count 비교 후 업데이트
-        elif j == len(nums) - 1:
-            #아 abs(int(nums) - target) 부분이 ++ , -- 와 같은 역활을 한다.
-            #거기다가 숫자의 길이를 더해주면,,
-            min_count = min(min_count, abs(int(nums) - target) + len(nums))
-
-print(min_count)
-
-
 '''
 
-결국 2가지 케이스가 존재하는 것! 
 
- 1. 현재채녈에서 희망채널까지 + , - 로 이동하는 경우
- 2. 모든 채널을 순회하면서 해당 채널에서 희망채널까지 +- 버튼으로 이동했을떄의 횟수
+2번의 (2, k)- 섞기 이다! 1번만 하는게 아니라!
+
+
+가능한 모든 K의 쌍에 대해 검사하여, K의 쌍으로 섞은 카드가 입력과 같다면,,?!
+다시 말하면,
+가능한 모든 k의 쌍에 대해 검사하여 k의 쌍으로 섞은 카드가 입력과 같다면 k의 쌍을 순서대로 출력하면 된다.
+
+https://dongdongfather.tistory.com/72
+
+와 모르겟어,, 이건 
 '''
+
+
+from collections import deque
+
+N = int(input())
+final = list(map(int, input().split()))
+
+#완전탐색
+
+def calc(cards, K):
+    # 첫번째 단계
+    _cards = deque([])
+    for i in range(2**K):
+        _cards.appendleft(cards.pop())
+    # 이후
+    for i in range(2, K+2):
+        _cards2 = deque([])
+        for j in range(2**(K-i+1)):  # 카드를 앞으로 뺀다.
+            _cards2.appendleft(_cards.pop())
+        for _ in range(len(_cards)):
+            cards.appendleft(_cards.pop())
+        _cards = _cards2
+    for i in range(len(_cards)):
+        cards.appendleft(_cards.pop())
+
+for i in range(1, N + 1):
+    if 2 ** i > N:
+        break
+    else:
+        k = i
+
+for i in range(1, k + 1):
+    for j in range(1, k + 1):
+        temp = deque([i for i in range(1, N+1)]) #초기상태 만듬
+        calc(temp, i)
+        calc(temp, j)
+        if list(temp) == final:
+            print(i, j)
+            exit()
