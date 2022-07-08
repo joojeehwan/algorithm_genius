@@ -1,6 +1,9 @@
 N = int(input())
 M = int(input())
-buttons = list(input().split())
+if M:
+    buttons = list(input().split())
+else:
+    buttons = []
 
 cnt = abs(100-N)
 for i in range(1000000 + 1):
