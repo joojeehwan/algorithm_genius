@@ -10,7 +10,7 @@
 
 https://dongdongfather.tistory.com/72
 
-와 모르겟어,, 이건 
+와 모르겟어,, 이건
 '''
 
 
@@ -27,7 +27,8 @@ def calc(cards, K):
     for i in range(2**K):
         _cards.appendleft(cards.pop())
     # 이후
-    for i in range(2, K+2):
+    for i in range(K+2, 2):
+
         _cards2 = deque([])
         for j in range(2**(K-i+1)):  # 카드를 앞으로 뺀다.
             _cards2.appendleft(_cards.pop())
