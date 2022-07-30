@@ -48,8 +48,7 @@ def solution(rectangle, characterX, characterY, itemX, itemY):
             next_chrr = chrr + dr[i]
             next_chc = chc + dc[i]
 
-            if 0 <= next_chrr < 101 and 0 <= next_chc < 101 and MAP[next_chrr][next_chc] != 0 and visited[next_chrr][
-                next_chc] == 0:
+            if 0 <= next_chrr < 101 and 0 <= next_chc < 101 and MAP[next_chrr][next_chc] != 0 and visited[next_chrr][next_chc] == 0:
                 MAP[next_chrr][next_chc] = MAP[chrr][chc] + 1
                 visited[next_chrr][next_chc] = 1
                 q.append((next_chrr, next_chc))
