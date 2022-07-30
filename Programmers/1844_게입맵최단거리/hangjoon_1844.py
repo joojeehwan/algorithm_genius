@@ -14,7 +14,7 @@ def solution(maps):
     queue.append(start)
     while queue:
         now_r, now_c = queue.popleft()
-        for dr, dc in [(0, -1), (1, 0), (0, 1), (-1, 0)]:  # 남동북서
+        for dr, dc in [(1, 0), (0, -1), (-1, 0), (0, -1)]:  # 남동북서
             new_r, new_c = now_r + dr, now_c + dc
             if new_r < 0 or new_r >= row or new_c < 0 or new_c >= col:  # 맵 밖임
                 continue
