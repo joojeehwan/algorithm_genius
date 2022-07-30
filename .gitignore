@@ -4,3 +4,4 @@ test.py
 /bin/
 .classpath
 .project
+.DS_Store

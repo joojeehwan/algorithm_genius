@@ -46,15 +46,12 @@ for t in range(1, int(input())+1):
     n, x = map(int, input().split())
     ground = [list(map(int, input().split())) for _ in range(n)]
     answer = 0
-    ar = []
-    ac = []
     # 행별 점검
     for r in range(n):
         line = []
         for c in range(n):
             line.append(ground[r][c])
         if check(line):
-            ar.append(r)
             answer += 1
 
     # 열 점검
@@ -63,7 +60,6 @@ for t in range(1, int(input())+1):
         for r in range(n):
             line.append(ground[r][c])
         if check(line):
-            ac.append(c)
             answer += 1
 
     print(f'#{t} {answer}')
