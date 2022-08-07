@@ -10,14 +10,9 @@ def solution(s):
     for bracket in s:
         if bracket == "(":
             open_bracket += 1
-            # if open_bracket > close_bracket > 0:
-            #     answer = False
-            #     break
         else:
             close_bracket += 1
-            if open_bracket == close_bracket:
-                open_bracket, close_bracket = 0, 0
-            elif open_bracket < close_bracket:
+            if open_bracket < close_bracket:
                 answer = False
                 break
 
@@ -25,6 +20,3 @@ def solution(s):
         answer = False
 
     return answer
-
-print(solution("(((()())))"))
-
