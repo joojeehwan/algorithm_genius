@@ -75,27 +75,23 @@ def solution(n, wires):
 
 #dfs - stack
 
-def dfs(start, graph):
-    visit = [False for _ in range(len(graph))]
-    st = [start]
-    visit[start] = True
+def dfs(start, n ,graph):
+    visited = [False for _ in range(n + 1)]
+    stack = [start]
+    visited[start] = True
 
     res = 0
-    while st:
+    while stack:
 
-        r = st.pop()
+        node = stack.pop()
         res += 1
 
-        for v in graph[r]:
-            if v not in st and not visit[v]:
-                visit[v] = True
-                st.append(v)
+        for v in graph[node]:
+            if v not in stack and not visited[v]:
+                visited[v] = True
+                stack.append(v)
 
     return res
-
-#dfs -stack 참고
-#https://juhee-maeng.tistory.com/entry/Python-%EA%B9%8A%EC%9D%B4-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89DFS-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
-
 
 def solution(n, wires):
     answer = 101
@@ -111,7 +107,7 @@ def solution(n, wires):
             graph[x].append(y)
             graph[y].append(x)
 
-        answer = min(answer, abs(dfs(a, graph) - dfs(b, graph)))
+        answer = min(answer, abs(dfs(a, n, graph) - dfs(b, n ,graph)))
 
     return answer
 
