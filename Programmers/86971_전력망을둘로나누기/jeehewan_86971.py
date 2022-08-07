@@ -12,7 +12,7 @@ remove함수를 사용
 그외에는 bfs를 사용해서, 전령망의 갯수를 counting
 
 
-union - find로도 푸네,, 흠흠
+union - find로도 푸네,, 흠흠 귀찬앗어,,,
 
 
 '''
