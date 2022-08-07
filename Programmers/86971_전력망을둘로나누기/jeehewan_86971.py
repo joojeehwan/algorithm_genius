@@ -1,8 +1,5 @@
 
 
-
-#bfs 풀이
-
 '''
 
 
@@ -14,12 +11,14 @@ remove함수를 사용
 
 그외에는 bfs를 사용해서, 전령망의 갯수를 counting
 
-dfs 풀이도 할 예정
+
+union - find로도 푸네,, 흠흠
 
 
 '''
 
 
+#bfs
 from collections import deque
 
 
@@ -72,3 +71,87 @@ def solution(n, wires):
         graph[wires[i][1]].append(wires[i][0])
 
     return answer
+
+
+#dfs - stack
+
+def dfs(start, graph):
+    visit = [False for _ in range(len(graph))]
+    st = [start]
+    visit[start] = True
+
+    res = 0
+    while st:
+
+        r = st.pop()
+        res += 1
+
+        for v in graph[r]:
+            if v not in st and not visit[v]:
+                visit[v] = True
+                st.append(v)
+
+    return res
+
+#dfs -stack 참고
+#https://juhee-maeng.tistory.com/entry/Python-%EA%B9%8A%EC%9D%B4-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89DFS-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
+
+
+def solution(n, wires):
+    answer = 101
+
+    for k in range(n - 1):
+
+        temp = wires[:]
+        a, b = temp.pop(k)
+
+        graph = [[] for _ in range(n + 1)]
+
+        for x, y in temp:
+            graph[x].append(y)
+            graph[y].append(x)
+
+        answer = min(answer, abs(dfs(a, graph) - dfs(b, graph)))
+
+    return answer
+
+
+#dfs - 재귀
+
+def dfs(start, visited, graph):
+    global cnt
+    visited[start] = True
+
+    cnt += 1
+
+    for i in graph[start]:
+        if not visited[i]:
+            dfs(i, visited, graph)
+
+
+def solution(n, wires):
+    global cnt
+    graph = [[] for _ in range(n + 1)]
+
+    answer = 102
+
+    for n1, n2 in wires:
+        graph[n1].append(n2)
+        graph[n2].append(n1)
+
+    for n1, n2 in wires:
+        graph[n1].remove(n2)
+        graph[n2].remove(n1)
+
+        cnt = 0
+        visited = [False for _ in range(n + 1)]
+        dfs(1, visited, graph)
+
+        answer = min(answer, abs(n - 2 * cnt))
+
+        graph[n1].append(n2)
+        graph[n2].append(n1)
+
+    return answer
+
+
