@@ -48,4 +48,7 @@ def solution(word):
             word_lst.append(word + words[i])
             dfs(cnt + 1, word + words[i])
 
+
+    dfs(0, "")
+
     return word_lst.index(word) + 1
