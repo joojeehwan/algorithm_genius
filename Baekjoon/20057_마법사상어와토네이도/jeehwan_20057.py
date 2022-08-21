@@ -7,7 +7,7 @@
 
     항상 시작은
     start_row = N // 2
-    start_col = N //
+    start_col = N // 2
 
     좌 -> 하 -> 우 -> 상
 

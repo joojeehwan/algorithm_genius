@@ -94,7 +94,6 @@ def bfs():
         search_iceberg += 1 # bfs 단위로 덩어리 파악
         cnt = 0 #인접 바다의 갯수 => 0의 갯수
 
-
         for i in range(4):
 
             next_row = now_row + dr[i]
