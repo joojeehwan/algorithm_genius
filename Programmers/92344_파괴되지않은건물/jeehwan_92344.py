@@ -86,4 +86,74 @@ n n n 0
 
 '''
 
+def solution(board, skill):
+    tboard = [[0]*(len(board[0])+1) for _ in range(len(board)+1)]
 
+    for typ, r1, c1, r2, c2, degree in skill:
+        tboard[r1][c1]+=(2*typ-3)*degree
+        tboard[r2+1][c2+1]+=(2*typ-3)*degree
+        tboard[r2+1][c1]-=(2*typ-3)*degree
+        tboard[r1][c2+1]-=(2*typ-3)*degree
+    #누적합 왼쪽에서 오른쪽
+    for i in range(1, len(tboard[0])):
+        tboard[0][i]+=tboard[0][i-1]
+    #누적합 위에서 아래
+    for i in range(1, len(tboard)):
+        tboard[i][0]+=tboard[i-1][0]
+
+    for x in range(1, len(tboard)):
+        for y in range(1, len(tboard[0])):
+            tboard[x][y]+=tboard[x][y-1]+tboard[x-1][y]-tboard[x-1][y-1]
+    ans = 0
+    for x in range(len(board)):
+        for y in range(len(board[0])):
+            if board[x][y]+tboard[x][y]>0: ans+=1
+    return ans
+
+
+
+
+#다른 풀이
+
+def make_prefix_sum(board, skill):  # 누적합을 기록하는 리스트 만드는 부분
+    prefix_sum = board
+    board_h, board_w = len(board), len(board[0])
+
+    prefix_sum = [[0 for i in range(board_w + 1)] for i in range(board_h + 1)]  # 가로 세로 +1 크기의 리스트
+    for item in skill:  # type = 1 : 공격, type = 2 : 회복, -1.5하고 2를 곱하면 +1 이나 -1이 됨.
+        prefix_sum[item[1]][item[2]] += (item[0] - 1.5) * 2 * item[5]  # 왼쪽 윗 꼭짓점.
+        prefix_sum[item[1]][item[4] + 1] -= (item[0] - 1.5) * 2 * item[5]  # 오른쪽 윗 꼭짓점.
+        prefix_sum[item[3] + 1][item[2]] -= (item[0] - 1.5) * 2 * item[5]  # 왼쪽 아래 꼭짓점.
+        prefix_sum[item[3] + 1][item[4] + 1] += (item[0] - 1.5) * 2 * item[5]  # 오른쪽 아래 꼭짓점.
+    return prefix_sum
+
+
+def get_prefix_sum(board):  # 누적합 더하는 부분
+    prefix_sum = board
+    board_h, board_w = len(board), len(board[0])
+
+    for i in range(1, board_h):  # 첫칸은 자기 자신이니까 0이 아닌 1부터 시작했음.
+        for j in range(board_w):
+            prefix_sum[i][j] += prefix_sum[i - 1][j]  # 위에서 아래 방향으로 누적합
+    for i in range(board_h):
+        for j in range(1, board_w):
+            prefix_sum[i][j] += prefix_sum[i][j - 1]  # 왼쪽에서 오른쪽 방향으로 누적합
+    return prefix_sum
+
+
+def solution(board, skill):
+    answer = 0
+    board_h, board_w = len(board), len(board[0])
+    prefix_sum_list = make_prefix_sum(board, skill)
+    prefix_sum = get_prefix_sum(prefix_sum_list)
+
+    for i in range(board_h):
+        for j in range(board_w):
+            board[i][j] = board[i][j] + prefix_sum[i][j]
+
+    for item in board:
+        for j in item:
+            if j > 0:
+                answer += 1
+
+    return answer
