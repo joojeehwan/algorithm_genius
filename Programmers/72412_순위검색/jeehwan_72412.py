@@ -38,7 +38,6 @@ case는 총 16가지가 나올것(하나의 조건에 대해서, 있고/없고 �
 
 from bisect import bisect_left
 
-
 def solution(info, query):
     # 아래의 dict를 활용해서, 입력으로 받은 문자열을 인덱스로 사용할 것
     word_map = {'-': 0, 'cpp': 1, 'java': 2, 'python': 3,

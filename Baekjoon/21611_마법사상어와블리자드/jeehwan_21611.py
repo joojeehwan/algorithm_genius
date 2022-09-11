@@ -81,6 +81,7 @@ def blizard(d, s):
     list_to_matrix(remove_zero(lst))
 
 #2. 2차원 배열을 1차원 배열로 변환
+
 def matrix_to_list():
 
     now_row = (N + 1) // 2 - 1
@@ -146,7 +147,7 @@ def explode():
                 if num_cnt >= 4:
                     flag = True
                     ans += num_cnt * before_num
-                    #번호 바뀌기 전 인덱스 부터 cnt 만틈 0으로
+                    #번호 바뀌기 전 인덱스 부터 cnt 만큼 0으로
                     #슬라이싱으로 범위 넓게 잡아서 값 변경이 가능 => 그 값의 범위만큼 값을 대체
                     lst[i - num_cnt : i] = [0] * num_cnt
                 before_num = target_num
