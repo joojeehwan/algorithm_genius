@@ -155,8 +155,12 @@ def rotate() :
     MAP = temp[:]
 
 
+
 point = 0
 curPoint = 0
+
+#python은 do - while 이 없다.
+# 대신에 아래처럼 사용하면 된다.
 while True :
     curPoint = calcPoint()
     point += curPoint
