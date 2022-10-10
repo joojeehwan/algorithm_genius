@@ -139,7 +139,7 @@ def rotate_square(start_row, start_col, square_n):
 
 
 def rotate() :
-
+    global MAP
     #temp 배열 초기화
     for row in range(n):
         for col in range(n):
@@ -164,12 +164,13 @@ def rotate() :
     rotate_square(sqaure_n + 1, sqaure_n + 1, sqaure_n)
     
     # temp 값을 다시 적용
-    for row in range(n):
-        for col in range(n):
-            MAP[row][col] = temp[row][col]
-    
 
+    # for row in range(n):
+    #     for col in range(n):
+    #         MAP[row][col] = temp[row][col]
 
+    # 이건 전역으로 안 쓸때만 사용이 된다.
+    # MAP = temp[:]
 #전체 시뮬레이션 3회 반복(1 - 3 회의 예술점수를 모두 합한 값을 출력)
 
 
