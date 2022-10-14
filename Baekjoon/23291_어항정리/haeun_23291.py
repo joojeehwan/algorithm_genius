@@ -1,7 +1,5 @@
 from collections import deque
 from copy import deepcopy
-import sys
-sys.stdin = open('input.txt', 'r')
 
 N, K = map(int, input().split())
 input_fish = list(map(int, input().split()))
@@ -19,7 +17,6 @@ def print_bowls():
     print("########### 어항 출력 ##########")
     for i in range(len(bowls)):
         print(i, "번 : ", bowls[i])
-        # print(i, "번 : ", *bowls[i])
 
 
 def rotate(_bowls):
@@ -27,7 +24,7 @@ def rotate(_bowls):
     bowl_h = len(r_bowl)
     top_len, bottom_len = len(r_bowl[0]), len(r_bowl[bowl_h-1])
 
-    while top_len+1 < bottom_len - top_len:
+    while top_len+1 <= bottom_len - top_len:
         # 공중부양된 어항 저장
         floated = deque()
 
@@ -67,6 +64,10 @@ def rotate(_bowls):
         # 변수 값을 업데이트 해준다.
         bowl_h = len(r_bowl)
         top_len, bottom_len = len(r_bowl[0]), len(r_bowl[bowl_h - 1])
+
+        print("########### 어항 돌려돌려 돌림판 ##########")
+        for i in range(len(r_bowl)):
+            print(i, "번 : ", r_bowl[i])
 
     return r_bowl
 
@@ -131,7 +132,7 @@ def flatten(_bowls):
     return flat
 
 
-while max_fish - min_fish >= K:
+while max_fish - min_fish > K:
 
     # 1. 가장 적은 물고기를 가진 어항에 한마리씩 추가한다.
     # 일렬로 되어있다는건 bowls의 가장 첫번째 줄을 의미한다. 어차피 지금 한줄밖에 없음
@@ -144,46 +145,40 @@ while max_fish - min_fish >= K:
     # pop(0)랑 deque 중에 뭐가 나을까.. -> deque로 선택
     bowls.appendleft(deque([left_bowl]))
 
+    print("루프 돌기 전 처음 상태")
+    print_bowls()
+
     # 3. 2개 이상 쌓여있는 어항을 시계방향 90도 회전
     # 이후 두번째 줄에 다시 append
     # 맨 밑줄이 공중부양한 어항보다 짧으면 stop
     # 여기가 가장 어려운 부분임
+    print(" 가장 어 려 운 부 분")
     bowls = rotate(bowls)
 
     # 4. 물고기 수 차이에 따라 조절한다. 이따 7번에서 또 한다.
     bowls = balancing(bowls)
+    print(" ========= 조절 했음 =========")
+    print_bowls()
 
     # 5. 일렬로 배치한다.
     bowls = deque([flatten(bowls)])
-    print("일렬")
-    print(bowls)
+    print("========= 한줄로 서 ===============")
+    print_bowls()
 
     # 6. 두번, N / 2개씩 나눠서 180도 회전하고 붙인다.
+    print("========== 반 짤라서 회전하기 =========")
     half = N // 2
     for _ in range(2):
         new_bowl = deque()
         height = len(bowls)
-        for h in range(height):
+        for h in range(height-1, -1, -1):
             line = bowls[h]
             # 왼쪽 채우기
             left = deque()
             for i in range(half):
                 left.append(line[i])
-
+            left.reverse()
             new_bowl.append(left)
-
-        # 왼쪽 180도 회전하기
-        rotate_left = deque()
-        for h in range(height-1, -1, -1):
-            left_line = new_bowl[h]
-            left_line.reverse()
-            print("??", left_line)
-            rotate_left.append(left_line)
-
-        new_bowl.clear()
-        new_bowl.append(rotate_left)
-
-
 
         for h in range(height):
             line = bowls[h]
@@ -192,16 +187,24 @@ while max_fish - min_fish >= K:
             for i in range(half):
                 right.append(line[half+i])
             new_bowl.append(right)
-        print("회전해써용")
-        # print(new_bowl)
         bowls = deepcopy(new_bowl)
-        print(bowls)
         half //= 2
+        print_bowls()
 
-
-
-
-
-
+    # 7. 물고기 조절 작업을 수행한다.
+    bowls = balancing(bowls)
+    print("========== 조작 ON =============")
     print_bowls()
-    break
+    # 8. 일렬로 변환한다.
+    print("========== 또 한줄로 서 ==========")
+    bowls = deque([flatten(bowls)])
+    # 9. 최대 물고기 수와 최소 물고기 수를 업데이트한다.
+    print("========= 지금 상태는??")
+    print_bowls()
+    max_fish, min_fish = max(bowls[0]), min(bowls[0])
+    print(f"최대 : {max_fish} & 최소 : {min_fish}")
+    # 10. 걸린 시간을 추가한다.
+    answer += 1
+    print(f"$$$$$$$$$$$$$$$$$$${answer} 번째 정리 완료")
+
+print(answer)
