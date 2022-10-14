@@ -167,7 +167,7 @@ def func(lst):
     test[0] = 1
 
     #밑에 복사가 들어가면, 오류가 난다. ... 왜그러는걱지?!
-    #test = lst[:]
+    test = lst[:]
 
     return res
 
