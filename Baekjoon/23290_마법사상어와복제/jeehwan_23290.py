@@ -162,7 +162,7 @@ print(answer)
 
 def func(lst):
     res = []
-    #global test
+    global test
     #global로 가져오면 여기서 또 에러 나네
     test[0] = 1
 
