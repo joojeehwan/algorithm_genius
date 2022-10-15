@@ -1,2 +1,7 @@
 .idea
+test.py
+*.txt
+/bin/
+.classpath
+.project
 .DS_Store
