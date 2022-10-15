@@ -20,18 +20,21 @@ def print_bowls():
 
 
 def rotate(_bowls):
+    # 이미 맨 왼쪽의 한개는 떼어서 위로 올린 상태로 왔음.
     r_bowl = deepcopy(_bowls)
-    bowl_h = len(r_bowl)
-    top_len, bottom_len = len(r_bowl[0]), len(r_bowl[bowl_h-1])
+    bowl_h = 2
+    # 공중부양 블럭의 가로, 맨 밑줄의 가로
+    float_width, bottom_width = 2, len(r_bowl[bowl_h-1])
 
-    while top_len+1 <= bottom_len - top_len:
-        # 공중부양된 어항 저장
+    while float_width <= bottom_width:
+        # 공중부양된 어항 저장할 곳
         floated = deque()
 
         # 한줄씩 보면서, top_len(너비) 만큼씩 떼어 저장한다. 회전시키려고
+        pop_width = len(r_bowl[0])
         for row in range(bowl_h):
             line = []
-            for _ in range(top_len):
+            for _ in range(pop_width):
                 line.append(r_bowl[row].popleft())
             floated.append(line)
 
@@ -63,11 +66,7 @@ def rotate(_bowls):
 
         # 변수 값을 업데이트 해준다.
         bowl_h = len(r_bowl)
-        top_len, bottom_len = len(r_bowl[0]), len(r_bowl[bowl_h - 1])
-
-        print("########### 어항 돌려돌려 돌림판 ##########")
-        for i in range(len(r_bowl)):
-            print(i, "번 : ", r_bowl[i])
+        float_width, bottom_width = len(r_bowl), len(r_bowl[bowl_h - 1]) - row
 
     return r_bowl
 
@@ -78,6 +77,7 @@ def balancing(_bowls):
     diff = [0] * height
     # 계산 했는지 확인 배열
     check = [0] * height
+    # 행마다 열의 수가 달라서 이렇게 만들었다.
     for r in range(len(bowls)):
         diff[r] = [0] * len(_bowls[r])
         check[r] = [0] * len(_bowls[r])
@@ -92,6 +92,7 @@ def balancing(_bowls):
                 # 범위 넘어가는 거 체크마저 어렵네
                 if not (0 <= next_r < height and 0 <= next_c < col):
                     continue
+                # 윗줄이 현재 줄보다 col 수가 적으면 찾을 수 없다.
                 if len(_bowls[next_r]) <= next_c:
                     continue
                 if check[next_r][next_c]:
@@ -108,6 +109,7 @@ def balancing(_bowls):
                         # 내가 작다
                         diff[next_r][next_c] -= d
                         diff[r][c] += d
+            # 중복 체크 안하게끔
             check[r][c] = 1
 
     result = deepcopy(_bowls)
@@ -132,6 +134,7 @@ def flatten(_bowls):
     return flat
 
 
+# ---- 시작 ! -----
 while max_fish - min_fish > K:
 
     # 1. 가장 적은 물고기를 가진 어항에 한마리씩 추가한다.
@@ -145,28 +148,20 @@ while max_fish - min_fish > K:
     # pop(0)랑 deque 중에 뭐가 나을까.. -> deque로 선택
     bowls.appendleft(deque([left_bowl]))
 
-    print("루프 돌기 전 처음 상태")
-    print_bowls()
 
     # 3. 2개 이상 쌓여있는 어항을 시계방향 90도 회전
     # 이후 두번째 줄에 다시 append
     # 맨 밑줄이 공중부양한 어항보다 짧으면 stop
     # 여기가 가장 어려운 부분임
-    print(" 가장 어 려 운 부 분")
     bowls = rotate(bowls)
 
     # 4. 물고기 수 차이에 따라 조절한다. 이따 7번에서 또 한다.
     bowls = balancing(bowls)
-    print(" ========= 조절 했음 =========")
-    print_bowls()
 
     # 5. 일렬로 배치한다.
     bowls = deque([flatten(bowls)])
-    print("========= 한줄로 서 ===============")
-    print_bowls()
 
     # 6. 두번, N / 2개씩 나눠서 180도 회전하고 붙인다.
-    print("========== 반 짤라서 회전하기 =========")
     half = N // 2
     for _ in range(2):
         new_bowl = deque()
@@ -189,22 +184,14 @@ while max_fish - min_fish > K:
             new_bowl.append(right)
         bowls = deepcopy(new_bowl)
         half //= 2
-        print_bowls()
 
     # 7. 물고기 조절 작업을 수행한다.
     bowls = balancing(bowls)
-    print("========== 조작 ON =============")
-    print_bowls()
     # 8. 일렬로 변환한다.
-    print("========== 또 한줄로 서 ==========")
     bowls = deque([flatten(bowls)])
     # 9. 최대 물고기 수와 최소 물고기 수를 업데이트한다.
-    print("========= 지금 상태는??")
-    print_bowls()
     max_fish, min_fish = max(bowls[0]), min(bowls[0])
-    print(f"최대 : {max_fish} & 최소 : {min_fish}")
     # 10. 걸린 시간을 추가한다.
     answer += 1
-    print(f"$$$$$$$$$$$$$$$$$$${answer} 번째 정리 완료")
 
 print(answer)
