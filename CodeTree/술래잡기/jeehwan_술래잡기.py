@@ -92,7 +92,7 @@ def initialize_seeker_path():
         #방향 바꾸기
         move_dir = (move_dir + 1) % 4
 
-        # 위, 아래가 될 떄 방향을 바꾸어야 한다.
+        # 위, 아래가 될 떄 1씩 증가하면서 더 가야 한다.
         if move_dir == 0 or move_dir == 2:
             move_num += 1
 

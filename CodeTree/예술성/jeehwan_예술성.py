@@ -156,6 +156,56 @@ def rotate() :
             elif col == n // 2:
                 temp[col][row] = MAP[row][col]
 
+    # 회전
+    def rotate_square(start_row, start_col, square_n):
+
+        for row in range(start_row, start_row + square_n):
+            for col in range(start_col, start_col + square_n):
+                # (0, 0)으로 가져와서 변환 진행
+                o_row, o_col = row - start_row, col - start_col
+
+                # 좌표 변환
+                r_row, r_col = o_col, square_n - o_row - 1
+
+                # 다시 원래 좌표로
+                temp[r_row + start_row][r_col + start_col] = MAP[row][col]
+
+    def rotate():
+        global MAP
+        # temp 배열 초기화
+        for row in range(n):
+            for col in range(n):
+                temp[row][col] = 0
+        # 회전을 진행
+
+        # 1 십자 모양 회전
+
+        for row in range(n):
+            for col in range(n):
+                if row == n // 2:
+                    temp[n - col - 1][row] = MAP[row][col]
+
+                elif col == n // 2:
+                    temp[col][row] = MAP[row][col]
+
+        # 2 사각형 회전
+        sqaure_n = n // 2
+        rotate_square(0, 0, sqaure_n)
+        rotate_square(0, sqaure_n + 1, sqaure_n)
+        rotate_square(sqaure_n + 1, 0, sqaure_n)
+        rotate_square(sqaure_n + 1, sqaure_n + 1, sqaure_n)
+
+        # temp 값을 다시 적용
+
+        # for row in range(n):
+        #     for col in range(n):
+        #         MAP[row][col] = temp[row][col]
+
+        # 이건 전역으로 안 쓸때만 사용이 된다.
+        # MAP = temp[:]
+
+    # 전체 시뮬레이션 3회 반복(1 - 3 회의 예술점수를 모두 합한 값을 출력)
+
     # 2 사각형 회전
     sqaure_n = n // 2
     rotate_square(0, 0, sqaure_n)
