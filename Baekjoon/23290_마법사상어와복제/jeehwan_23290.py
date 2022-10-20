@@ -162,12 +162,12 @@ print(answer)
 
 def func(lst):
     res = []
-    #global test
+    global test
     #global로 가져오면 여기서 또 에러 나네
     test[0] = 1
 
     #밑에 복사가 들어가면, 오류가 난다. ... 왜그러는걱지?!
-    #test = lst[:]
+    test = lst[:]
 
     return res
 

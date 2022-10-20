@@ -59,7 +59,7 @@ def calcPoint() :
     #가장 큰 무지개 블록
     max_rainbow = 0
 
-    for color in range(1, m+1):
+    for color in range(1, m + 1):
         #안엔다가 두는 이유. => 무지개 블록이 없다면 밖에 두어도 됨. 왜냐면 색깔이 다른 블록끼리는 겹칠일이 없다.
         #문제는 무지개 블록 다른 색깔의 블록을 밝을 수 있어서. 초기화를 해주어야 한다.
         visited = [[False] * 20 for _ in range(20)]
