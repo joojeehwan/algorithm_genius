@@ -1,12 +1,8 @@
-#최단거리를 구할 수 있는 dfs, bfs 함수만 짜고 이어서 낼 풀기
-
+# 최단거리를 구할 수 있는 dfs, bfs 함수만 짜고 이어서 낼 풀기
+# 근데 이거는 최단거리를 구하는거라 dfs보단 bfs가 맞아.
 
 import sys
 from collections import deque
-
-
-
-
 
 
 #초기 입력
@@ -68,6 +64,9 @@ for _ in range(m):
 visited = [[False] * n for _ in range(n)]
 
 # 최단 거리 아아...!  아 이거 굳이 visited 배열로도 할 수 있다!
+
+# 이 문제에서 이것을 쓴 이유는,
+# 각 편의점별로(row, col)별로 가장 최단거리를 인덱스별로 기록하기 위힘
 shortest = [[0] * n for _ in range(n)]
 
 # 근데 원래 본디 나는 굳이 다른 메모리 써가면서 하지 않았음. 그냥 visted에다가 적으면서 했음.
@@ -107,10 +106,28 @@ def bfs(row, col):
 
             if 0 <= next_row < n and 0 <= next_col < n :
                 #visited_2 의 처음을 0으로 두면, 아예 안 간 곳만 체크를 하게 된다. 
-                if not visited[next_row][next_col] :
+                if not visited[next_row][next_col] and MAP[next_row][next_col] != 2 :
 
                     q.append((next_row, next_col))
                     visited[next_row][next_col] = True
                     #visited_2[next_row][next_col] = visted_2[now_row][now_col] + 1
                     shortest[next_row][next_col] = shortest[now_row][now_col] + 1
+
+
+
+
+from collections import deque
+
+#상 좌 우 하
+dr = [-1, 0, 0, 1]
+dc = [0, -1, 1, 0]
+
+
+N, M = map(int, sys.stdin.readline().split())
+graph = [list(map(int, input().split())) for _ in range(N)]
+stores = [list(map(int, input().split())) for _ in range(M)]
+# camp를 queue에 담기 및 관리
+camp = deque()
+
+
 
