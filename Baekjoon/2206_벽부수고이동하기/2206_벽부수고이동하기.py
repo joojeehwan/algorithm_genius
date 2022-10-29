@@ -26,7 +26,6 @@ bfs로 후다닥 풀어보자구!
 
 
 
-
 '''
 
 from collections import deque
