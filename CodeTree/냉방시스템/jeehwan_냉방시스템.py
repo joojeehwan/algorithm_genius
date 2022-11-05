@@ -102,6 +102,7 @@ def air_mix():
     deepcopy를 사용해도 무방하다.
 
     이게 바로 진정 "동시에"의 의미.
+
     '''
 
     temp = [[0] * n for _ in range(n)]
