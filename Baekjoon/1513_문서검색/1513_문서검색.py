@@ -18,6 +18,7 @@ while target in sentence:
 
     cnt += 1
 print(cnt)
+
 #위치별 값을 세는 방법
 
 sentence = input()
