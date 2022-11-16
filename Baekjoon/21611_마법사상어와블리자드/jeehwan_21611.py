@@ -106,7 +106,7 @@ def matrix_to_list():
             now_row = new_row
             now_col = new_col
             now_dir = (now_dir + 1) % 4
-
+        #나선형 모양으로 데이터들을 리스트에 넣는다
         res.append(MAP[now_row][now_col])
         visited[now_row][now_col] = True
 
@@ -122,7 +122,8 @@ def remove_zero(lst):
         #num이 0이 아니면
         if num != 0:
             new_lst.append(num)
-    #나머지 숫자 값을 다 넣고, 폭발로 사라진 빈공간이 아니라, 원래 부터 빈공간이었던 공간도 처리
+    # 나머지 숫자 값을 다 넣고, 폭발로 사라진 빈공간이 아니라, 원래 부터 빈공간이었던 공간도 처리
+    # 전체공간에서, 새로 채운 부분을 뺴면 원래부터 빈공간
     new_lst += [0] * ((N ** 2 - 1) - len(new_lst))
     return new_lst
 
