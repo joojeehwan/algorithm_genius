@@ -29,7 +29,7 @@ from collections import deque
 def bfs(start_node):
 
     q = deque()
-    q.append((nodes(start_node)))
+    q.append((nodes[start_node]))
     visited[start_node] = True
 
 
@@ -52,14 +52,13 @@ def bfs(start_node):
             if visited[i] :
                 continue
 
-           #Manhattan_dis = abs(nodes[i][0] - now_row) - abs(nodes[i][1] - now_col) <= 1000:
-            # if문의 조건으로 쓰이는 부분과, 변수에 할당한 부분 차이 확인
-            # 정리 후 algo 정리
+            Manhattan_dis = abs(nodes[i][0] - now_row) - abs(nodes[i][1] - now_col)
 
-            if abs(nodes[i][0] - now_row) + abs(nodes[i][1] - now_col) <= 1000:
+            if Manhattan_dis <= 1000:
                 q.append((nodes[i]))
                 visited[i] = True
-    #while - else / for - else 다시 정리
+
+    # while - else / for - else 다시 정리
     else:
         return "sad"
 

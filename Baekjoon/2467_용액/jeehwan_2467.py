@@ -13,38 +13,38 @@
 
 #투 포인터 풀이
 
-# N = int(input())
-#
-# #이미 정렬되어 있게 들어온다.
-# lst = list(map(int, input().split()))
-#
-# start = 0
-#
-# end = N - 1
-#
-# min_value = 1100000000000000000
-#
-# index_left = 0
-#
-# index_right = 0
-#
-# while start < end:
-#
-#     SUM = lst[start] + lst[end]
-#
-#     if abs(SUM) < min_value:
-#
-#         index_left = start
-#
-#         index_right = end
-#
-#         min_value = abs(SUM)
-#
-#     if SUM < 0:
-#         start += 1
-#
-#     else:
-#         end -= 1
+N = int(input())
+
+#이미 정렬되어 있게 들어온다.
+lst = list(map(int, input().split()))
+
+start = 0
+
+end = N - 1
+
+min_value = 1100000000000000000
+
+index_left = 0
+
+index_right = 0
+
+while start < end:
+
+    SUM = lst[start] + lst[end]
+
+    if abs(SUM) < min_value:
+
+        index_left = start
+
+        index_right = end
+
+        min_value = abs(SUM)
+
+    if SUM < 0:
+        start += 1
+
+    else:
+        end -= 1
 
 '''
 
