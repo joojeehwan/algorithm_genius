@@ -100,6 +100,34 @@ def gravity() :
                     MAP[row + blank][col] = MAP[row][col]
                     MAP[row][col] = -2
 
+
+#하은이가 알려준 중력방식..! 좋다
+
+MAX_WIDTH = 3
+bucket = [[]]
+# 해설지에 있던 중력 적용 함수. 계산이 훨씬 쉬운 것 같다.
+def gravity():
+    # 변경된 값을 기존 배열에 복사붙여넣기 위해 만듬
+    for i in range(n + 1):
+        for j in range(1, MAX_WIDTH + 1):
+            temp[i][j] = 0
+
+    # 여기가 중력 내려가는 부분!!!!!
+    for j in range(1, MAX_WIDTH + 1):
+        # 기존 배열은 계속 위로 올라가면서
+        # POINT !! 새로운 배열에는 index값을 따로 두어서
+        # 기존 배열에 값이 있는 경우에만 넣고 index 변경
+        last_idx = n
+        for i in range(n, -1, -1):
+            if bucket[i][j]:
+                temp[last_idx][j] = bucket[i][j]
+                last_idx -= 1
+
+    # 다시 temp 배열을 옮겨줍니다.
+    for i in range(n + 1):
+        for j in range(1, MAX_WIDTH + 1):
+            bucket[i][j] = temp[i][j]
+
 #반시계 방향 회전
 def rotate() :
     global MAP
