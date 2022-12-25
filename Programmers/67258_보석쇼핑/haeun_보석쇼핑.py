@@ -13,14 +13,10 @@ def solution(gems):
     while start < shelf - gems_cnt + 1:
         if len(now_gems) != gems_cnt:
             end += 1
-
             if end > shelf - 1:
                 break
             end_jewel = gems[end]
-            if now_gems.get(end_jewel):
-                now_gems[end_jewel] += 1
-            else:
-                now_gems[end_jewel] = 1
+            now_gems[end_jewel] = now_gems.get(end_jewel, 0) + 1
         else:
             if end - start < min_len:
                 min_len = end - start
@@ -28,13 +24,12 @@ def solution(gems):
             start_jewel = gems[start]
             now_gems[start_jewel] -= 1
             if now_gems[start_jewel] == 0:
-                now_gems.pop(start_jewel)
+                del now_gems[start_jewel]
             start += 1
 
     return answer
 
 
 """
-이거 슬라이딩 윈도우로 푼 사람 있나?
 https://school.programmers.co.kr/questions/14715
 """
