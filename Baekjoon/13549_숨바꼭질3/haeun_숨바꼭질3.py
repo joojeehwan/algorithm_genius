@@ -23,10 +23,9 @@ while not visited[k]:
 
     # 순간이동 먼저 처리
     teleport = now_pos * 2
-    if MIN_VALUE <= teleport <= MAX_VALUE:
-        if not visited[teleport] or visited[teleport] >= visited[now_pos]:
-            visited[teleport] = visited[now_pos]
-            queue.append(teleport)
+    if MIN_VALUE <= teleport <= MAX_VALUE and not visited[teleport]:
+        visited[teleport] = visited[now_pos]
+        queue.append(teleport)
 
     for x in [-1, 1]:
         new_pos = now_pos + x

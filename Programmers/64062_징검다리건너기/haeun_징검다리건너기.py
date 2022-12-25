@@ -5,26 +5,27 @@
 
 def solution(stones, k):
     start, end = 1, max(stones)
-    mid = (start + end) // 2
+    answer = 1
 
-    while start < end:
+    while start <= end:
+        mid = (start + end) // 2
         zeros = 0
 
         for stone in stones:
-            if stone - mid <= 0:
+            if stone - mid < 0:
                 zeros += 1
-                if zeros >= k:
+                if zeros == k:
                     break
             else:
                 zeros = 0
 
-        if zeros >= k:
-            end = mid
+        if zeros == k:
+            end = mid - 1
         else:
             start = mid + 1
-        mid = (start + end) // 2
+            answer = max(answer, mid)
 
-    return mid
+    return answer
 
 
 print(solution([2, 4, 5, 3, 2, 1, 4, 2, 5, 1], 3))
