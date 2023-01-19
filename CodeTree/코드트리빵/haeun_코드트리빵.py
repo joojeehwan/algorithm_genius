@@ -26,7 +26,7 @@ dc = [0, -1, 1, 0]
 stores = []
 for _ in range(m):
     r, c = map(int, input().split())
-    stores.append((r-1, c-1))
+    stores.append((r - 1, c - 1))
 people = list((-1, -1) for _ in range(m))
 
 # 현재 시간
@@ -124,8 +124,6 @@ while not done():
 
     # cur_time <= m 이라면 cur_time 번째 사람이 베이스캠프에 간다.
     if cur_time <= m:
-        basecamp(cur_time-1)
-
-
+        basecamp(cur_time - 1)
 
 print(cur_time)
