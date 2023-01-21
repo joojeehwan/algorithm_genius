@@ -14,6 +14,8 @@
 def solution(cap, n, deliveries, pickups):
     answer = 0
 
+    # 배달이 완료된 부분들을 삭제 하는 부분 굳이 갈 필요가 없으니깐,
+    # 그렇다면 왜 지우는데?! 그 배열의 길이로 답을 구할꺼라
     while True:
 
         while deliveries and deliveries[-1] == 0:
@@ -30,7 +32,7 @@ def solution(cap, n, deliveries, pickups):
 
         answer += max(len(deliveries), len(pickups))
 
-        # 뒷 쪽에서 부터 배달을 해줘야 함
+        # 뒷 쪽에서 부터 배달을 해줘야 함 => 그리디
         if deliveries:
 
             baedal = cap
@@ -38,9 +40,11 @@ def solution(cap, n, deliveries, pickups):
             for i in reversed(range(len(deliveries))):
                 # 배달최대치 보다, 배달해야할 것이 더 많다면
                 if baedal < deliveries[i]:
+                    # 일단 니가 원하는 만큼 까고 끝
                     deliveries[i] -= baedal
                     break
                 else:
+                    # 너 가져갈꺼 가져가고! 이제 퉁
                     baedal -= deliveries[i]
                     deliveries[i] = 0
 
