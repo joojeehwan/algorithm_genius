@@ -150,6 +150,11 @@ Point find_first_pipe(){
 
 
 Point bfs(){
+    /*  1. 첫번째 파이프부터 이어진 파이프를 따라 진행 -> 가스가 흐를 수 있는 방향이 정해져 있으므로, 길히 한 방향임.
+        2. 그러다, 이 파이프 통로랑 이어진 좌표에 점이 있자면 stop!
+        3. 그 점을 기준으로 주변에 진행 가능한 방향으로 구멍이 나있는 파이프가 있는 지 check
+        4. 그런 파이프가 존재한다면, 이어져야하는데 이어지지 않은 파이프이다.
+    */
     
     Point retVal;
     Point first_pipe = find_first_pipe(); //start from M end Z
@@ -158,11 +163,6 @@ Point bfs(){
     q.push({first_pipe.x, first_pipe.y});
     visited[first_pipe.x][first_pipe.y]=true;
     
-    /*  1. 첫번째 파이프부터 이어진 파이프를 따라 진행 -> 가스가 흐를 수 있는 방향이 정해져 있으므로, 길히 한 방향임.
-        2. 그러다, 이 파이프 통로랑 이어진 좌표에 점이 있자면 stop!
-        3. 그 점을 기준으로 주변에 진행 가능한 방향으로 구멍이 나있는 파이프가 있는 지 check
-        4. 그런 파이프가 존재한다면, 이어져야하는데 이어지지 않은 파이프이다.
-    */
     while(!q.empty()){
         Point p = q.front(); q.pop();
         visited[p.x][p.y] = true;
