@@ -36,3 +36,6 @@ while left <= right:
 
     else: #길이를 너무 길게 잡아서, 목표가 되는 target보다 더 적게 n개를 만든것! => 길이를 감소 시켜야 함.
         right = mid - 1
+
+
+print(right)
