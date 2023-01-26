@@ -9,9 +9,19 @@ public class HE1976 {
 	static int N, M;
 	static int[][] connect;
 	static int[] plan;
+	static int[] parent;
 	
-	static void unionFind() {
-		
+	static int findSet(int a) {
+		if(parent[a] == a) return a;
+		parent[a] = findSet(parent[a]);
+		return parent[a];
+	}
+	
+	static void union(int a, int b) {
+		int pa = findSet(a);
+		int pb = findSet(b);
+
+		parent[pb] = pa;
 	}
 	
 	static boolean bfs(int start, int goal) {
@@ -44,13 +54,21 @@ public class HE1976 {
 		M = Integer.parseInt(br.readLine());
 		connect = new int[N][N];
 		plan = new int[M];
+		parent = new int[N];
+		
+		for(int i = 0; i < N; i++) {
+			parent[i] = i; // 스스로가 부모라고 설정해두기.
+		}
+		
 		
 		// 인접 행렬
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < N; j++) {
 				connect[i][j] = Integer.parseInt(st.nextToken());
-				if (i == j) connect[i][j] = 1;
+				if (connect[i][j] == 1) {
+					union(i, j);
+				}
 			}
 		}
 		
@@ -73,10 +91,16 @@ public class HE1976 {
 //			}
 //		}
 		
+		for(int i = 0; i < M-1; i++) {
+			if(findSet(plan[i]) != findSet(plan[i+1])) {
+				answer = "NO";
+				break;
+			}
+		}
 		System.out.println(answer);
 	}
-
 }
+
 
 
 /* BFS가 통과는 하네..!
