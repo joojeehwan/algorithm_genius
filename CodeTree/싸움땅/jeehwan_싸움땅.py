@@ -239,275 +239,280 @@ for point in points:
 
 
 '''
-약간 나랑 비슷한 풀이
+풀이 1
 '''
 
 
-# def change_weapon(idx, y, x):
-#     # idx 검투사가 (x,y)에서 무기 선택하는 행위
-#     if field[y][x] and warriors[idx][4] > field[y][x][0]:
-#         # 현재 무기보다 해당 위치에 있는 가장 쎈 무기가 더 좋은 경우(음수)
-#         # 지금 무기 집어넣고 가장 좋은 무기 선택
-#         warriors[idx][4] = heapq.heappushpop(field[y][x], warriors[idx][4])
-#
-#     war_field[y][x] = idx  # 해당 위치에 싸움꾼 정보 업데이트
-#     warriors[idx][0], warriors[idx][1] = y, x
-#     return
-#
-#
-# def throw_weapon(idx, y, x):
-#     # 현재 들고 있는 무기 버리기
-#     heapq.heappush(field[y][x], warriors[idx][4])
-#     warriors[idx][4] = 0  # 무기 버린 상태
-#     return
-#
-#
-# def fight(cur_idx, foe_idx):
-#     # 두 싸움꾼 번호가 주어졌을 때, 상대방의 승리 여부 체크
-#     cur_stat, cur_weapon = warriors[cur_idx][3], warriors[cur_idx][4]
-#     foe_stat, foe_weapon = warriors[foe_idx][3], warriors[foe_idx][4]
-#
-#     if cur_stat - cur_weapon < foe_stat - foe_weapon:
-#         # 상대방의 스탯+무기 공격력이 더 큰 경우
-#         score[foe_idx] += (foe_stat - foe_weapon) - (cur_stat - cur_weapon)
-#         return True
-#     elif cur_stat - cur_weapon == foe_stat - foe_weapon and cur_stat < foe_stat:
-#         # 스탯+무기 공격력은 같은데, 상대방 기초 스탯이 더 높은 경우
-#         # 점수 업데이트는 없음
-#         return True
-#     # 이동한 싸움꾼이 이긴 경우
-#     score[cur_idx] += (cur_stat - cur_weapon) - (foe_stat - foe_weapon)
-#     return False
-#
-#
-# def loser_move(idx, y, x):
-#     throw_weapon(idx, y, x)  # 무기 현재 위치에 버림
-#     l_dir = warriors[idx][2]  # 패자 초기 방향
-#     for _ in range(4):
-#         n_y, n_x = y + dir[l_dir][0], x + dir[l_dir][1]
-#         if 0 <= n_y < n and 0 <= n_x < n and not war_field[n_y][n_x]:
-#             # 이동하고자 하는 곳이 필드 내부면서, 그 위치에 다른 싸움꾼이 없다면
-#             change_weapon(idx, n_y, n_x)  # 이동해서 무기 교체
-#             # 패자 정보 업데이트
-#             war_field[n_y][n_x] = idx
-#             warriors[idx][1], warriors[idx][0] = n_x, n_y
-#             warriors[idx][2] = l_dir
-#             return
-#         l_dir = (l_dir + 1) % 4  # 이동 못하면 방향 90도 전환
-#     return
-#
-#
-# def war_round():
-#     for idx in range(1, m + 1):
-#         cur_man = warriors[idx]  # idx번 검투사 움직일 차례
-#         cur_x, cur_y, cur_dir = cur_man[1], cur_man[0], cur_man[2]
-#
-#         next_y, next_x = cur_y + dir[cur_dir][0], cur_x + dir[cur_dir][1]  # 움직인 위치
-#         if not (0 <= next_y < n and 0 <= next_x < n):  # 격자 바깥으로 나간다면
-#             cur_dir = (cur_dir + 2) % 4  # 방향 180도 전환
-#             warriors[idx][2] = cur_dir
-#             next_y, next_x = cur_y + dir[cur_dir][0], cur_x + dir[cur_dir][1]  # 움직인 위치
-#
-#         # cur_man[0], cur_man[1], cur_man[2] = next_y, next_x, cur_dir # 최종 이동 위치 및 방향 업데이트
-#         war_field[cur_y][cur_x] = 0  # 이동했으니 원래 위치에서 싸움꾼 정보 제거
-#
-#         if war_field[next_y][next_x]:  # 움직인 위치에 다른 싸움꾼이 있다면
-#             foe_idx = war_field[next_y][next_x]  # 해당 위치에 있던 싸움꾼 번호
-#
-#             foe_win = fight(idx, foe_idx)  # 누가 이겼는지 체크
-#
-#             if foe_win:  # 상대방 승리
-#                 loser_move(idx, next_y, next_x)
-#                 change_weapon(foe_idx, next_y, next_x)
-#             else:  # idx 싸움꾼 승리
-#                 loser_move(foe_idx, next_y, next_x)
-#                 change_weapon(idx, next_y, next_x)
-#
-#         else:  # 움직인 위치에 상대방이 없다면
-#             change_weapon(idx, next_y, next_x)
-#
-#
-# if __name__ == "__main__":
-#     import heapq
-#
-#     n, m, k = map(int, input().split())
-#     field = [list(map(int, input().split())) for _ in range(n)]  # 무기 위치 저장되는 필드
-#     warriors = [0] + [list(map(int, input().split())) + [0] for _ in range(m)]  # 제공되는 싸움꾼 정보 + 무기 정보
-#     # 각 싸움꾼의 x, y, 방향, 능력치, 무기
-#
-#     for y in range(n):
-#         for x in range(n):
-#             # 무기 위치 힙 사용하기 위해 지도 각 위치 리스트 처리
-#             # max heap 위해 무기 공격력 음수 처리
-#             if field[y][x]:
-#                 field[y][x] = [-field[y][x]]
-#             else:
-#                 field[y][x] = []
-#
-#     war_field = [[0] * n for _ in range(n)]  # 싸움꾼의 위치를 저장하기 위한 필드
-#     for idx, man in enumerate(warriors):
-#         if idx == 0: continue
-#         man[0] -= 1
-#         man[1] -= 1
-#         x, y = man[1], man[0]  # idx번 싸움꾼의 좌표
-#         war_field[y][x] = idx  # 해당 위치에 몇 번 싸움꾼이 있는지 저장
-#
-#     dir = [[-1, 0], [0, 1], [1, 0], [0, -1]]  # 상우하좌
-#     score = [0] * (m + 1)  # 점수 저장용
-#
-#     for _ in range(k):
-#         war_round()
-#
-#     print(*score[1:])
-#
-#
-# #다른 사람 풀이
-#
-# def move_guns(player_num):
-#     # 플레이어가 총이 없는 경우
-#     if player[player_num][4] == 0:
-#         player[player_num][4] = max(guns[nx][ny])
-#         del guns[nx][ny][guns[nx][ny].index(max(guns[nx][ny]))]
-#     # 플레이어가 총이 있는 경우
-#     else:
-#         #플레이어의 총보다 바닥의 총이 공격력이 쌘 경우
-#         if max(guns[nx][ny]) > player[player_num][4]:
-#             tmp = player[player_num][4]
-#             player[player_num][4] = max(guns[nx][ny])
-#             del guns[nx][ny][guns[nx][ny].index(max(guns[nx][ny]))]
-#             guns[nx][ny].append(tmp)  # 기존 총을 바닥에 버림
-#     graph[nx][ny] = 0  # 이동한 자리 사람 마킹
-#
-# def player_fight():
-#     player_idx = []
-#     for i in range(len(player_posit)):
-#         if player_posit[i] == (nx,ny):
-#             player_idx.append(i)
-#     #점수 계산
-#     score1 = [player[player_idx[0]][3] + player[player_idx[0]][4], player[player_idx[0]][3], player_idx[0]]
-#     score2 = [player[player_idx[1]][3] + player[player_idx[1]][4], player[player_idx[1]][3], player_idx[1]]
-#     tmp = []
-#     tmp.append(score1)
-#     tmp.append(score2)
-#     tmp.sort(reverse=True)
-#     score[tmp[0][2]-1] += tmp[0][0] - tmp[1][0]
-#
-#
-#     #진 플레이어
-#     loser = tmp[1][2]
-#     lose_gun = player[loser][4]
-#     #가진 총이 있다면 내려놓음
-#     if player[loser][4] != 0:
-#         guns[nx][ny].append(lose_gun)
-#         player[loser][4] = 0
-#
-#
-#     next_d = player[loser][2]
-#     #방향 찾기
-#     for _ in range(4):
-#         next_x = nx + dx[next_d]
-#         next_y = ny + dy[next_d]
-#         if not(0 <= next_x < n and 0 <= next_y < n) or graph[next_x][next_y] == 0:
-#             next_d = (next_d + 1) % 4
-#         else:
-#             break
-#     #좌표 없뎃
-#     player_posit[loser] = (next_x, next_y)
-#     player[loser][0], player[loser][1], player[loser][2] = next_x, next_y, next_d
-#
-#
-#     #가장 공격력이 쌘 총을 주음
-#     if graph[next_x][next_y] != -1:
-#         player[loser][4] = max(guns[next_x][next_y])
-#         #공격력 쌘 총을 바닥에서 없앰
-#         del guns[next_x][next_y][guns[next_x][next_y].index(max(guns[next_x][next_y]))]
-#
-#     graph[next_x][next_y] = 0  # 그래프 업뎃
-#
-#     #이긴 플레이어
-#     winner = tmp[0][2]
-#     if guns[nx][ny]:
-#         if max(guns[nx][ny]) > player[winner][4]:
-#             tmp_gun = player[winner][4]
-#             player[winner][4] = max(guns[nx][ny])
-#             del guns[nx][ny][guns[nx][ny].index(max(guns[nx][ny]))]
-#             guns[nx][ny].append(tmp_gun)  # 기존 총을 바닥에 버림
-#
-# #n:격자 크기 m:플레이어의 수, k:라운드수
-# n ,m, k = map(int, input().split())
-# #총의 정보
-# graph = [list(map(int, input().split())) for _ in range(n)] # 0은 인간, -1은 빈칸, 나머지는 총
-# guns = [[[] for _ in range(n)] for _ in range(n)]
-#
-# #총의 상태 그래프
-# for i in range(n):
-#     for j in range(n):
-#         if graph[i][j] != 0:
-#             guns[i][j].append(graph[i][j])
-#
-# player = {}
-# score = [0] * m
-#
-# #북 동 남 서
-# dx = [-1, 0, 1, 0]
-# dy = [0, 1, 0, -1]
-#
-# player_posit = [[]]
-# #[x, y, 방향, 기본스텟, 총보유]
-# for i in range(1, m+1):
-#     player[i] = list(map(int, input().split())) + [0]
-#     player[i][0] -= 1
-#     player[i][1] -= 1
-#     player_posit.append((player[i][0], player[i][1]))
-#
-# #사람이 없는 빈칸을 -1로 다시 변환
-# for i in range(n):
-#     for j in range(n):
-#         if graph[i][j] == 0 and (i,j) not in player_posit:
-#             graph[i][j] = -1
-#
-#
-# for num in range(k):
-#     #플레이어의 이동
-#     for i in range(1, m+1):
-#         x, y, d  = player[i][0], player[i][1], player[i][2]
-#         nx = x + dx[d]
-#         ny = y + dy[d]
-#         #2-1 이동 칸에 총이 있는 경우 2-2플레이어가 있는 경우 1) 이긴 플레이어 2) 진 플레이어
-#         if not (0 <= nx < n and 0 <= ny < n):
-#             nx = x - dx[d]
-#             ny = y - dy[d]
-#             d = (d + 2) % 4
-#
-#         #이동 칸에 총이 있는 경우
-#         if graph[nx][ny] > 0:
-#             player_posit[i] = (nx, ny)
-#             player[i][0], player[i][1], player[i][2] = nx, ny, d
-#             if not guns[x][y]:
-#                 graph[x][y] = -1  # 기존 자리 빈칸
-#             else:
-#                 graph[x][y] = max(guns[x][y])
-#             move_guns(i)
-#
-#         #이동한 칸에 플레이어가 잇는 경우
-#         elif graph[nx][ny] == 0:
-#             if not guns[x][y]:
-#                 graph[x][y] = -1  # 기존 자리 빈칸
-#             else:
-#                 graph[x][y] = max(guns[x][y])
-#             player_posit[i] = (nx, ny)
-#             player[i][0], player[i][1], player[i][2] = nx, ny, d
-#
-#             player_fight()
-#
-#         #이동 칸이 빈칸인 경우
-#         else:
-#             player_posit[i] = (nx, ny)
-#             player[i][0], player[i][1], player[i][2] = nx, ny, d
-#             graph[nx][ny] = 0
-#             if not guns[x][y]:
-#                 graph[x][y] = -1  # 기존 자리 빈칸
-#             else:
-#                 graph[x][y] = max(guns[x][y])
-#
-# print(' '.join(map(str,score)))
+def change_weapon(idx, y, x):
+    # idx 검투사가 (x,y)에서 무기 선택하는 행위
+    if field[y][x] and warriors[idx][4] > field[y][x][0]:
+        # 현재 무기보다 해당 위치에 있는 가장 쎈 무기가 더 좋은 경우(음수)
+        # 지금 무기 집어넣고 가장 좋은 무기 선택
+        warriors[idx][4] = heapq.heappushpop(field[y][x], warriors[idx][4])
+
+    war_field[y][x] = idx  # 해당 위치에 싸움꾼 정보 업데이트
+    warriors[idx][0], warriors[idx][1] = y, x
+    return
+
+
+def throw_weapon(idx, y, x):
+    # 현재 들고 있는 무기 버리기
+    heapq.heappush(field[y][x], warriors[idx][4])
+    warriors[idx][4] = 0  # 무기 버린 상태
+    return
+
+
+def fight(cur_idx, foe_idx):
+    # 두 싸움꾼 번호가 주어졌을 때, 상대방의 승리 여부 체크
+    cur_stat, cur_weapon = warriors[cur_idx][3], warriors[cur_idx][4]
+    foe_stat, foe_weapon = warriors[foe_idx][3], warriors[foe_idx][4]
+
+    if cur_stat - cur_weapon < foe_stat - foe_weapon:
+        # 상대방의 스탯+무기 공격력이 더 큰 경우
+        score[foe_idx] += (foe_stat - foe_weapon) - (cur_stat - cur_weapon)
+        return True
+    elif cur_stat - cur_weapon == foe_stat - foe_weapon and cur_stat < foe_stat:
+        # 스탯+무기 공격력은 같은데, 상대방 기초 스탯이 더 높은 경우
+        # 점수 업데이트는 없음
+        return True
+    # 이동한 싸움꾼이 이긴 경우
+    score[cur_idx] += (cur_stat - cur_weapon) - (foe_stat - foe_weapon)
+    return False
+
+
+def loser_move(idx, y, x):
+    throw_weapon(idx, y, x)  # 무기 현재 위치에 버림
+    l_dir = warriors[idx][2]  # 패자 초기 방향
+    for _ in range(4):
+        n_y, n_x = y + dir[l_dir][0], x + dir[l_dir][1]
+        if 0 <= n_y < n and 0 <= n_x < n and not war_field[n_y][n_x]:
+            # 이동하고자 하는 곳이 필드 내부면서, 그 위치에 다른 싸움꾼이 없다면
+            change_weapon(idx, n_y, n_x)  # 이동해서 무기 교체
+            # 패자 정보 업데이트
+            war_field[n_y][n_x] = idx
+            warriors[idx][1], warriors[idx][0] = n_x, n_y
+            warriors[idx][2] = l_dir
+            return
+        l_dir = (l_dir + 1) % 4  # 이동 못하면 방향 90도 전환
+    return
+
+
+def war_round():
+    for idx in range(1, m + 1):
+        cur_man = warriors[idx]  # idx번 검투사 움직일 차례
+        cur_x, cur_y, cur_dir = cur_man[1], cur_man[0], cur_man[2]
+
+        next_y, next_x = cur_y + dir[cur_dir][0], cur_x + dir[cur_dir][1]  # 움직인 위치
+        if not (0 <= next_y < n and 0 <= next_x < n):  # 격자 바깥으로 나간다면
+            cur_dir = (cur_dir + 2) % 4  # 방향 180도 전환
+            warriors[idx][2] = cur_dir
+            next_y, next_x = cur_y + dir[cur_dir][0], cur_x + dir[cur_dir][1]  # 움직인 위치
+
+        # cur_man[0], cur_man[1], cur_man[2] = next_y, next_x, cur_dir # 최종 이동 위치 및 방향 업데이트
+        war_field[cur_y][cur_x] = 0  # 이동했으니 원래 위치에서 싸움꾼 정보 제거
+
+        if war_field[next_y][next_x]:  # 움직인 위치에 다른 싸움꾼이 있다면
+            foe_idx = war_field[next_y][next_x]  # 해당 위치에 있던 싸움꾼 번호
+
+            foe_win = fight(idx, foe_idx)  # 누가 이겼는지 체크
+
+            if foe_win:  # 상대방 승리
+                loser_move(idx, next_y, next_x)
+                change_weapon(foe_idx, next_y, next_x)
+            else:  # idx 싸움꾼 승리
+                loser_move(foe_idx, next_y, next_x)
+                change_weapon(idx, next_y, next_x)
+
+        else:  # 움직인 위치에 상대방이 없다면
+            change_weapon(idx, next_y, next_x)
+
+
+if __name__ == "__main__":
+    import heapq
+
+    n, m, k = map(int, input().split())
+    field = [list(map(int, input().split())) for _ in range(n)]  # 무기 위치 저장되는 필드
+    warriors = [0] + [list(map(int, input().split())) + [0] for _ in range(m)]  # 제공되는 싸움꾼 정보 + 무기 정보
+    # 각 싸움꾼의 x, y, 방향, 능력치, 무기
+
+    for y in range(n):
+        for x in range(n):
+            # 무기 위치 힙 사용하기 위해 지도 각 위치 리스트 처리
+            # max heap 위해 무기 공격력 음수 처리
+            if field[y][x]:
+                field[y][x] = [-field[y][x]]
+            else:
+                field[y][x] = []
+
+    war_field = [[0] * n for _ in range(n)]  # 싸움꾼의 위치를 저장하기 위한 필드
+    for idx, man in enumerate(warriors):
+        if idx == 0: continue
+        man[0] -= 1
+        man[1] -= 1
+        x, y = man[1], man[0]  # idx번 싸움꾼의 좌표
+        war_field[y][x] = idx  # 해당 위치에 몇 번 싸움꾼이 있는지 저장
+
+    dir = [[-1, 0], [0, 1], [1, 0], [0, -1]]  # 상우하좌
+    score = [0] * (m + 1)  # 점수 저장용
+
+    for _ in range(k):
+        war_round()
+
+    print(*score[1:])
+
+
+
+'''
+
+풀이 2
+
+'''
+
+def move_guns(player_num):
+    # 플레이어가 총이 없는 경우
+    if player[player_num][4] == 0:
+        player[player_num][4] = max(guns[nx][ny])
+        del guns[nx][ny][guns[nx][ny].index(max(guns[nx][ny]))]
+    # 플레이어가 총이 있는 경우
+    else:
+        #플레이어의 총보다 바닥의 총이 공격력이 쌘 경우
+        if max(guns[nx][ny]) > player[player_num][4]:
+            tmp = player[player_num][4]
+            player[player_num][4] = max(guns[nx][ny])
+            del guns[nx][ny][guns[nx][ny].index(max(guns[nx][ny]))]
+            guns[nx][ny].append(tmp)  # 기존 총을 바닥에 버림
+    graph[nx][ny] = 0  # 이동한 자리 사람 마킹
+
+def player_fight():
+    player_idx = []
+    for i in range(len(player_posit)):
+        if player_posit[i] == (nx,ny):
+            player_idx.append(i)
+    #점수 계산
+    score1 = [player[player_idx[0]][3] + player[player_idx[0]][4], player[player_idx[0]][3], player_idx[0]]
+    score2 = [player[player_idx[1]][3] + player[player_idx[1]][4], player[player_idx[1]][3], player_idx[1]]
+    tmp = []
+    tmp.append(score1)
+    tmp.append(score2)
+    tmp.sort(reverse=True)
+    score[tmp[0][2]-1] += tmp[0][0] - tmp[1][0]
+
+
+    #진 플레이어
+    loser = tmp[1][2]
+    lose_gun = player[loser][4]
+    #가진 총이 있다면 내려놓음
+    if player[loser][4] != 0:
+        guns[nx][ny].append(lose_gun)
+        player[loser][4] = 0
+
+
+    next_d = player[loser][2]
+    #방향 찾기
+    for _ in range(4):
+        next_x = nx + dx[next_d]
+        next_y = ny + dy[next_d]
+        if not(0 <= next_x < n and 0 <= next_y < n) or graph[next_x][next_y] == 0:
+            next_d = (next_d + 1) % 4
+        else:
+            break
+    #좌표 없뎃
+    player_posit[loser] = (next_x, next_y)
+    player[loser][0], player[loser][1], player[loser][2] = next_x, next_y, next_d
+
+
+    #가장 공격력이 쌘 총을 주음
+    if graph[next_x][next_y] != -1:
+        player[loser][4] = max(guns[next_x][next_y])
+        #공격력 쌘 총을 바닥에서 없앰
+        del guns[next_x][next_y][guns[next_x][next_y].index(max(guns[next_x][next_y]))]
+
+    graph[next_x][next_y] = 0  # 그래프 업뎃
+
+    #이긴 플레이어
+    winner = tmp[0][2]
+    if guns[nx][ny]:
+        if max(guns[nx][ny]) > player[winner][4]:
+            tmp_gun = player[winner][4]
+            player[winner][4] = max(guns[nx][ny])
+            del guns[nx][ny][guns[nx][ny].index(max(guns[nx][ny]))]
+            guns[nx][ny].append(tmp_gun)  # 기존 총을 바닥에 버림
+
+#n:격자 크기 m:플레이어의 수, k:라운드수
+n ,m, k = map(int, input().split())
+#총의 정보
+graph = [list(map(int, input().split())) for _ in range(n)] # 0은 인간, -1은 빈칸, 나머지는 총
+guns = [[[] for _ in range(n)] for _ in range(n)]
+
+#총의 상태 그래프
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] != 0:
+            guns[i][j].append(graph[i][j])
+
+player = {}
+score = [0] * m
+
+#북 동 남 서
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+player_posit = [[]]
+#[x, y, 방향, 기본스텟, 총보유]
+for i in range(1, m+1):
+    player[i] = list(map(int, input().split())) + [0]
+    player[i][0] -= 1
+    player[i][1] -= 1
+    player_posit.append((player[i][0], player[i][1]))
+
+#사람이 없는 빈칸을 -1로 다시 변환
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] == 0 and (i,j) not in player_posit:
+            graph[i][j] = -1
+
+
+for num in range(k):
+    #플레이어의 이동
+    for i in range(1, m+1):
+        x, y, d  = player[i][0], player[i][1], player[i][2]
+        nx = x + dx[d]
+        ny = y + dy[d]
+        #2-1 이동 칸에 총이 있는 경우 2-2플레이어가 있는 경우 1) 이긴 플레이어 2) 진 플레이어
+        if not (0 <= nx < n and 0 <= ny < n):
+            nx = x - dx[d]
+            ny = y - dy[d]
+            d = (d + 2) % 4
+
+        #이동 칸에 총이 있는 경우
+        if graph[nx][ny] > 0:
+            player_posit[i] = (nx, ny)
+            player[i][0], player[i][1], player[i][2] = nx, ny, d
+            if not guns[x][y]:
+                graph[x][y] = -1  # 기존 자리 빈칸
+            else:
+                graph[x][y] = max(guns[x][y])
+            move_guns(i)
+
+        #이동한 칸에 플레이어가 잇는 경우
+        elif graph[nx][ny] == 0:
+            if not guns[x][y]:
+                graph[x][y] = -1  # 기존 자리 빈칸
+            else:
+                graph[x][y] = max(guns[x][y])
+            player_posit[i] = (nx, ny)
+            player[i][0], player[i][1], player[i][2] = nx, ny, d
+
+            player_fight()
+
+        #이동 칸이 빈칸인 경우
+        else:
+            player_posit[i] = (nx, ny)
+            player[i][0], player[i][1], player[i][2] = nx, ny, d
+            graph[nx][ny] = 0
+            if not guns[x][y]:
+                graph[x][y] = -1  # 기존 자리 빈칸
+            else:
+                graph[x][y] = max(guns[x][y])
+
+print(' '.join(map(str,score)))
