@@ -64,7 +64,6 @@ answer = ""
 #
 # print(answer)
 
-
 print(''.join(stack[:len(stack)-k]))
 
 
