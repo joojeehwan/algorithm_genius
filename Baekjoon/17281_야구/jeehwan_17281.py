@@ -29,7 +29,7 @@
 
     - base정보를 리스트나 다른 자료구조를 사용해 저장하는 것이 아니라, 변수를 사용해 체크
 
-    - 1번 타자가 4번 타자로 고정되어 있다는 문제 조건 => 1번 인덱스 0 을 항상 3번자리에 넣기
+    - 1번 타자가 4번 타자로 고정되어 있다는 문제 조건 => 1번 인덱스(0) 을 항상 3번자리에 넣기
 
 
 
@@ -221,91 +221,54 @@ print(ans)
 
 #2. dfs 풀이
 
-"""
-17281 ⚾
-"""
-
-"""
-17281 ⚾
-"""
 import sys
-from itertools import permutations
 
+input = sys.stdin.readline
 
-def dfs1(l: int):
-    if l == 3:
-        temp.append(0)
-        dfs2(4)
-        temp.pop()
-        return
-    for i in range(1, 9):
-        if visit[i] is False:
-            temp.append(i)
-            visit[i] = True
-            dfs1(l+1)
-            temp.pop()
-            visit[i] = False
-
-
-def dfs2(l: int):
-    if l == 9:
-        simulation()
-        return
-    for i in range(1, 9):
-        if visit[i] is False:
-            temp.append(i)
-            visit[i] = True
-            dfs2(l+1)
-            temp.pop()
-            visit[i] = False
-
-
-def simulation():
+def dfs(cnt):
     global ans
-    score = 0
-    turn = 0
-    for i in result:
-        base1, base2, base3 = 0, 0, 0
-        out = 0
-        while out != 3:
-            if i[temp[turn]] == 0:
-                out += 1
-            elif i[temp[turn]] == 1:
-                score += base3
-                base3 = base2
-                base2 = base1
-                base1 = 1
-            elif i[temp[turn]] == 2:
-                score += base2 + base3
-                base3 = base1
-                base2 = 1
-                base1 = 0
-            elif i[temp[turn]] == 3:
-                score += base1 + base2 + base3
-                base3 = 1
-                base2 = 0
-                base1 = 0
-            else:
-                score += base1 + base2 + base3 + 1
-                base3 = 0
-                base2 = 0
-                base1 = 0
-            turn += 1
-            if turn == 9:
-                turn = 0
-    ans = max(ans, score)
+    if cnt == 9:
+        start, score = 0, 0
+        for inning in a:
+            out, b1, b2, b3 = 0, 0, 0, 0
+            while out <= 2:
+                p = select[start]
+                if inning[p] == 0:
+                    out += 1
+                elif inning[p] == 1:
+                    score += b3
+                    b1, b2, b3 = 1, b1, b2
+                elif inning[p] == 2:
+                    score += b2 + b3
+                    b1, b2, b3 = 0, 1, b1
+                elif inning[p] == 3:
+                    score += b1 + b2 + b3
+                    b1, b2, b3 = 0, 0, 1
+                else:
+                    score += b1 + b2 + b3 + 1
+                    b1, b2, b3 = 0, 0, 0
+
+                start += 1
+                start %= 9
+
+        ans = max(ans, score)
+        return
+
+    for i in range(9):
+        if c[i]:
+            continue
+        c[i] = 1
+        select[i] = cnt
+        dfs(cnt + 1)
+        c[i] = 0
+        select[i] = 0
 
 
-if __name__ == '__main__':
-    read = sys.stdin.readline
+n = int(input())
+a = [list(map(int, input().split())) for _ in range(n)]
+select, c = [0 for _ in range(9)], [0 for _ in range(9)]
+select[3], c[3] = 0, 1
+ans = 0
+dfs(1)
+print(ans)
 
-    ans = 0
-    n = int(read())
-    result = [list(map(int, read().split())) for _ in range(n)]
-
-    for i in range(1, 9):
-        visit = [False] * 9
-        visit[i] = True
-        temp = [i]
-        dfs1(1)
-    print(ans)
