@@ -23,7 +23,7 @@
 
 ex) dp[3]의 경우
 
-dp[3] = max(dp[1] + stair[3], dp[0] + stair[2] + stair[3])
+dp[4] = max(dp[2] + stair[4], dp[1] + stair[3] + stair[4])
 '''
 
 N = int(input())

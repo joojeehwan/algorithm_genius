@@ -125,50 +125,50 @@ n번째 행에서 기존에 주어진 '비용'을 넘지 않는 것의 값을 �
 '''
 
 
-# 다익스트라 풀이 1
-# import heapq
-#
-# INF =  int(1e9)
-# T = int(input())
-# for _ in range(T):
-#
-#     n, cost, m = map(int,input().split())
-#     dp = [[INF] * (n) for _ in range(cost+1)]
-#     MAP = [[] for i in range(n)]
-#
-#     for i in range(m):
-#         u, v, c, d = map(int,input().split())
-#         u-=1
-#         v-=1
-#         MAP[u].append((v,c,d))
-#
-#     q = []  #[(0,0,0)[ (dist, cost, node)
-#     heapq.heappush(q, (0, 0, 0))
-#
-#     while q :
-#         curTime, curCost, curNode = heapq.heappop(q)
-#
-#         #같은 비용으로 더 많은 시간이 걸리는 곳은 굳이 보지도 않는다.
-#         if curTime > dp[curCost][curNode]:
-#             continue
-#
-#         #선택된 노드의 인접한 노드들 확인
-#         for toNode,toCost,toTime in MAP[curNode]:
-#
-#             t = curTime + toTime # 해당 노드들 거쳐갈떄의 시간 및 비용 계산
-#             c = curCost + toCost
-#
-#             # 비용이 더 같거나 작게 들면서, 시간이 더 작게 든다면 갱신
-#             if c <= cost and t < dp[c][toNode]:
-#                 # 더 높은 cost를 투자할 때의 가중치도 맞춰준다.
-#                 for i in range(c,cost+1):
-#                     if dp[i][toNode] > t:
-#                         dp[i][toNode] = t
-#                     else:
-#                         break
-#                 heapq.heappush(q,(t,c,toNode))
-#
-#     print(dp[cost][n-1] if dp[cost][n-1] != INF else "Poor KCM")
+#다익스트라 풀이 1
+import heapq
+
+INF =  int(1e9)
+T = int(input())
+for _ in range(T):
+
+    n, cost, m = map(int,input().split())
+    dp = [[INF] * (n) for _ in range(cost+1)]
+    MAP = [[] for i in range(n)]
+
+    for i in range(m):
+        u, v, c, d = map(int,input().split())
+        u-=1
+        v-=1
+        MAP[u].append((v,c,d))
+
+    q = []  #[(0,0,0)[ (time,cost, node)
+    heapq.heappush(q, (0, 0, 0))
+
+    while q :
+        curTime, curCost, curNode = heapq.heappop(q)
+
+        #같은 비용으로 더 많은 시간이 걸리는 곳은 굳이 보지도 않는다.
+        if curTime > dp[curCost][curNode]:
+            continue
+
+        #선택된 노드의 인접한 노드들 확인
+        for toNode,toCost,toTime in MAP[curNode]:
+
+            t = curTime + toTime # 해당 노드들 거쳐갈떄의 시간 및 비용 계산
+            c = curCost + toCost
+
+            # 비용이 더 같거나 작게 들면서, 시간이 더 작게 든다면 갱신
+            if c <= cost and t < dp[c][toNode]:
+                # 더 높은 cost를 투자할 때의 가중치도 맞춰준다.
+                for i in range(c,cost+1):
+                    if dp[i][toNode] > t:
+                        dp[i][toNode] = t
+                    else:
+                        break
+                heapq.heappush(q,(t,c,toNode))
+
+    print(dp[cost][n-1] if dp[cost][n-1] != INF else "Poor KCM")
 
 
 
