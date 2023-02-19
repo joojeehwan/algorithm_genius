@@ -20,8 +20,17 @@ void merge(int u, int v){
     //더 낮은 높이를 가진 트리를
     //더 높은 트리 밑으로 합치면, 
     //높이가 더 큰쪽으로 유지되어 find 연산을 빠르게 할 수 있음.
-    if(rnk[u] > rnk[v]) swap(u,v);
-    parent[u] = v;
+    if(rnk[u] > rnk[v]) swap(u,v);  //항상 u가 더 낮은 트리가 되도록 한다.
+    parent[u] = v;  //u의 부모를 v의 부모로 바꾼다. 
+    if(rnk[u] == rnk[v]) ++rnk[v];
+}
+
+void merge(int u, int v){
+    u = find(u);
+    v = find(v);
+
+    if(rnk[u] > rnk[v]) swap(u,v);  //항상 u가 더 낮은 트리가 되도록 한다.
+    parent[u] = v;                  //(더 낮은트리(u)의 부모를 더 높은 트리(v)의 부모로 바꾸어 v의 트리에 합친다
     if(rnk[u] == rnk[v]) ++rnk[v];
 }
 
