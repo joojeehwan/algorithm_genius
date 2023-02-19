@@ -2,20 +2,14 @@
 
 M 사이에 O의 갯수가 2개 3개 2개 4개 ... 계속 반복
 
+S(n) = S(n-1) + 'm' + ('o' * (n+2)) + S(n-1)
+     = 2 * S(n-1) + 'm' + ('o' * (n+2))
+문자열의 길이로 보면, len_S(n) = 2 * len_S(n-1) + n + 3
 
-
-
-
-
+문자열 중 몇 번째 자리에 어떤 것이 들어가는지만 판단하면 되기 때문에, 문자열 자체보다는 문자열의 길이 및 인덱스로 판단
 
 '''
 
-
-# S(n) = S(n-1) + 'm' + ('o' * (n+2)) + S(n-1)
-#      = 2 * S(n-1) + 'm' + ('o' * (n+2))
-
-# 문자열의 길이로 보면, len_S(n) = 2 * len_S(n-1) + n + 3
-# 문자열 중 몇 번째 자리에 어떤 것이 들어가는지만 판단하면 되기 때문에, 문자열 자체보다는 문자열의 길이 및 인덱스로 판단
 
 def make_some_moo(current_degree, len_of_prev_degree, target_idx):
     len_of_next_degree = 2 * len_of_prev_degree + (current_degree + 3)
