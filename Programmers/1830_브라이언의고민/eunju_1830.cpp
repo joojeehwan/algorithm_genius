@@ -79,6 +79,7 @@ string solution(string sentence) {
             //다음 검사할 문장을 확인된 부분까지 제거하고 업데이트
             sentence = sentence.substr(pos.back()+1);
         }
+
         //2. sentenct[0]이 대문자인 경우
         
         //BxBxB / BxBxBxB  / BBBB / SpIpGpOpNp    G JqOqA
@@ -96,6 +97,7 @@ string solution(string sentence) {
                     if(sentence[1] == sentence[i])
                         pos.push_back(i);
                 }
+
                 // BxC / BxBxBxBxB 형태 -> 일반적인 rule1 글자 사이사이 마다 소문자 넣는 형태
                 if(pos.size()!=2){
                     if(pos.back() == sentence.size()-1) return "invalid";   //맨 마지막 특수문자 위치가, 문장의 마지막 위치가 아닐때 BxBxBxBx

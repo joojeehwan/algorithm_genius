@@ -3,7 +3,6 @@ if __name__=="__main__":
 
     arr = [[0 for _ in range(0,3)] for i in range(0,N)]
     
-
     #r g b
     for i in range(0,N):
         arr[i][0],arr[i][1],arr[i][2] = list(map(int,input().split()))
