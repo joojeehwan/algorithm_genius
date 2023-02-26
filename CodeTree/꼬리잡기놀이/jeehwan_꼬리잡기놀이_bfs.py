@@ -1,11 +1,13 @@
 
 #1 bfs 풀이
 
+
 from collections import deque
 
 # 우 상 좌 하
 dx = [0, 1, 0, -1]
 dy = [1, 0, -1, 0]
+
 
 def find_group(x, y):
     q = deque([(x, y)])
@@ -18,42 +20,69 @@ def find_group(x, y):
             nx, ny = x + dx[k], y + dy[k]
             if 0 <= nx < n and 0 <= ny < n:
                 if board[nx][ny] and not groups[nx][ny]:
-                    if board[x][y] == 1 and board[nx][ny] == 3: continue
+
+                    # 현재 내 위치 기준 머리 사람 이면서, 다음 가는 곳이 꼬리인 경우에만  continue인 것.
+                    # 모든 꼬리 사람이 들어가지 않는게 아님.
+
+                    if board[x][y] == 1 and board[nx][ny] == 3:
+                        continue
+
                     groups[nx][ny] = group_num
                     q.append((nx, ny))
-                    if board[nx][ny] != 4:
+                    if board[nx][ny] != 4:  # 즉, 이동선이 아니다, 사람이 있는 곳이다.
                         locations.append((board[nx][ny], nx, ny))
     return locations
+
 
 def move_team(num):
     head, x, y = group_info[num][0]
     tmp = []
     flag = False
+
+    debug = 1
+
+    print(group_info)
+
+    # 아래의 for문의 용도?! 사람을 하나 옮기기 위한 로직. not only 머리사람 하나 but also group_info에 있는 모든 좌표
     for k in range(4):
+
         nx, ny = x + dx[k], y + dy[k]
+
         if 0 <= nx < n and 0 <= ny < n:
-            if board[nx][ny] == 4:
-                board[nx][ny] = head #1이 담기겟네?!
+
+            # point1
+            if board[nx][ny] == 4:  # 이동선인 경우
+
+                board[nx][ny] = head  # 1이 담기겟네?!
                 tmp.append((head, nx, ny))
                 flag = True
                 break
+
+    # 머리 사람과 꼬리 사람을 제외한 나머지 사람들의 역활 및 인덱스 이동을 기록
     for i in range(len(group_info[num])):
 
+        # print(flag)
+        # 각 케이스의 머리 사람인 경우 제외
         if i == 0 and flag:
             continue
 
         now, x, y = group_info[num][i]
+        # before의 의미?! 머리 사람을 바라보는 방향으로 내 앞에 있는 사람의 역활 여부
         before, bx, by = group_info[num][i - 1]
         tmp.append((now, bx, by))
         board[bx][by] = now
-        board[x][y] = 4
+        board[x][y] = 4  # point1 에서의 if문을 통해 그 다음 이동을 위한 프로세스를 타기 위해 바꾸는 것
 
+    # 모든 for문을 다 돌고, 처음과 끝 사람의 역활과 인덱스를 갱신
     head, hx, hy = tmp[0]
     tail, tx, ty = tmp[-1]
     board[hx][hy] = 1
     board[tx][ty] = 3
 
+    # 이동이 완료된  tmp를 다시 group_info에 넣는다.
     group_info[num] = tmp
+
+    
 
 def find_arrow(now_time):
     global ans
