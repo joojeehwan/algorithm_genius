@@ -1,6 +1,6 @@
 """
-pypy로 안하면 해결 안됨
-
+이전 버전 : 540ms, 153420KB
+새 버전 : 992ms, 209084KB (뭐야?)
 """
 
 import sys
@@ -12,57 +12,67 @@ grid = list(list(map(int, sys.stdin.readline().split())) for _ in range(N))
 dr = [-1, 1, 0, 0]
 dc = [0, 0, -1, 1]
 
-answer, year = 0, 0
-icebergs = list()
+year = 0
+icebergs = 1
 
-for r in range(N):
-    for c in range(M):
-        if grid[r][c]:
-            icebergs.append((r, c))
 
-while icebergs:
-    melt_icebergs = list()
-    for row, col in icebergs:
-        sea = 0
-        for d in range(4):
-            around_row, around_col = row + dr[d], col + dc[d]
-            if 0 <= around_row < N and 0 <= around_col < M:
-                if grid[around_row][around_col] == 0:
-                    sea += 1
+def melting():
+    visited = [[0] * M for _ in range(N)]
+    minus = [[0] * M for _ in range(N)]
 
-        if grid[row][col] - sea <= 0:
-            melt_icebergs.append((row, col))
-        else:
-            grid[row][col] -= sea
+    # 빙하마다 바다 세기
+    for r in range(1, N-1):
+        for c in range(1, M-1):
+            if not visited[r][c] and grid[r][c]:
+                visited[r][c] = 1
 
+                queue = deque([(r, c)])
+                while queue:
+                    row, col = queue.popleft()
+
+                    for d in range(4):
+                        around_row, around_col = row + dr[d], col + dc[d]
+                        if 0 <= around_row < N and 0 <= around_col < M and not visited[around_row][around_col]:
+                            if grid[around_row][around_col] == 0:
+                                minus[row][col] += 1
+                            else:
+                                queue.append((around_row, around_col))
+                                visited[around_row][around_col] = 1
+
+    # 녹이기
+    for r in range(1, N-1):
+        for c in range(1, M-1):
+            grid[r][c] = grid[r][c] - minus[r][c]
+            if grid[r][c] <= 0: grid[r][c] = 0
+
+
+def counting():
+    visited = [[0] * M for _ in range(N)]
+    count = 0
+    # 빙하덩어리 세기
+
+    for r in range(1, N-1):
+        for c in range(1, M-1):
+            if not visited[r][c] and grid[r][c]:
+                count += 1
+                visited[r][c] = 1
+
+                queue = deque([(r, c)])
+                while queue:
+                    row, col = queue.popleft()
+
+                    for d in range(4):
+                        around_row, around_col = row + dr[d], col + dc[d]
+                        if 0 <= around_row < N and 0 <= around_col < M and \
+                                not visited[around_row][around_col] and grid[around_row][around_col] > 0:
+                            queue.append((around_row, around_col))
+                            visited[around_row][around_col] = 1
+    return count
+
+
+while icebergs == 1:
+    melting()
+    icebergs = counting()
     year += 1
 
-    for melt_row, melt_col in melt_icebergs:
-        grid[melt_row][melt_col] = 0
-        icebergs.remove((melt_row, melt_col))
-
-    if not icebergs:
-        break
-
-    queue = deque()
-    queue.append((icebergs[0]))
-    visited = [[0] * M for _ in range(N)]
-    visited[icebergs[0][0]][icebergs[0][1]] = 1
-    connected = 1
-
-    while queue:
-        row, col = queue.pop()
-        for d in range(4):
-            around_row, around_col = row + dr[d], col + dc[d]
-            if 0 <= around_row < N and 0 <= around_col < M:
-                if not visited[around_row][around_col]:
-                    if grid[around_row][around_col]:
-                        visited[around_row][around_col] = 1
-                        connected += 1
-                        queue.append((around_row, around_col))
-
-    if connected < len(icebergs):
-        answer = year
-        break
-
-print(answer)
+print(year if icebergs > 0 else 0)
