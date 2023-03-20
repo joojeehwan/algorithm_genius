@@ -2,10 +2,6 @@
 정답 : k 라운드 동안 게임을 진행하며, 각 플레이어들이 획득한 포인트를 출력
 """
 
-import sys
-sys.stdin = open("input.txt", "r")
-
-
 
 class Player:
     def __init__(self, row, col, direct, skill, gun):
@@ -156,9 +152,5 @@ def solution():
 
 for _ in range(K):
     solution()
-    # print_guns()
-    print_players()
-    print(f"{_}번째 턴")
-    print(*answer)
 
 print(*answer)
