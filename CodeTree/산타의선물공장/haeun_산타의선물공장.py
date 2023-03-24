@@ -1,6 +1,18 @@
-# import sys
-# sys.stdin = open("input.txt", "r")
+"""
+chatGPT의 답변
 
+solution() 함수 내부에서는 for 루프가 사용되므로, 시간 복잡도는 O(q * f)입니다. 여기서 q는 입력 쿼리 수이고, f는 최악의 경우 쿼리 하나를 처리하는 데 필요한 시간입니다.
+
+각 함수의 시간 복잡도는 다음과 같습니다.
+
+build_factory(N, M, ids, weights) 함수: O(N*M) 시간이 걸립니다. 이 함수는 공장의 벨트와 상자를 만듭니다.
+unload_box(w_max) 함수: O(M) 시간이 걸립니다. 이 함수는 컨베이어 벨트에서 상자를 내리는 작업을 수행합니다.
+drop_box(r_id) 함수: O(M) 시간이 걸립니다. 이 함수는 컨베이어 벨트에서 상자를 내립니다.
+check_box(f_id) 함수: O(M) 시간이 걸립니다. 이 함수는 주어진 상자가 어느 벨트에 있는지 확인합니다.
+break_belt(b_num) 함수: O(M) 시간이 걸립니다. 이 함수는 벨트를 교체하는 작업을 수행합니다.
+따라서 전체 코드의 시간 복잡도는 O(q * M * f)입니다.
+
+"""
 
 class Box:
     def __init__(self, id, weight, prev=None, next=None):
