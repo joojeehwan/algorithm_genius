@@ -71,7 +71,7 @@ group_cnt = [0] * (n * n + 1)
 #기록 배열 for bfs
 visited = [[False] * n for _ in range(n)]
 
-# bfs (그룹의 개수 counting) // dfs로도 해보기 함수
+# bfs (그룹의 개수 counting) // dfs로도 해보기
 def bfs(row, col):
 
     #visited = [[False] * n for _ in range(n)]
@@ -103,6 +103,20 @@ def bfs(row, col):
                     group_cnt[group_n] += 1
                     # 다음 bfs를 위한 q 추가
                     q.append((next_row, next_col))
+
+# def in_range(x, y):
+#     return 0 <= x and x < n and 0 <= y and y < n
+
+# # (x, y) 위치에서 DFS를 진행합니다.
+# def dfs(x, y):
+#     for dx, dy in zip(dxs, dys):
+#         nx, ny = x + dx, y + dy
+#         # 인접한 칸 중 숫자가 동일하면서 방문한 적이 없는 칸으로만 이동이 가능합니다.
+#         if in_range(nx, ny) and not visited[nx][ny] and arr[nx][ny] == arr[x][y]:
+#             visited[nx][ny] = True
+#             group[nx][ny] = group_n
+#             group_cnt[group_n] += 1
+#             dfs(nx, ny)
 
 # 그룹 구분짓기 함수
 def make_group():
@@ -146,10 +160,13 @@ def get_score() :
                 if 0 <= next_row < n and 0 <= next_col < n :
                     #현재 내가 있는 곳의 그룹번호와 다른 그룹번호가 이동후 발견되었다면?!
                     if MAP[row][col] != MAP[next_row][next_col] :
-
+                        
+                        # row/col, next_row/next_col이 몇번 그룹번호인지 기록
                         group1 = group[row][col]
                         group2 = group[next_row][next_col]
+                        #두 그룹의 칸을 이루고 있는 숫자 값을 기록
                         group1_cnt, group2_cnt = MAP[row][col], MAP[next_row][next_col]
+                        #그룹을 이루고 있는 칸의 수 기록
                         cnt1, cnt2 = group_cnt[group1], group_cnt[group2]
 
                         johwa_score += (cnt1 + cnt2) * group1_cnt * group2_cnt
@@ -185,11 +202,18 @@ def rotate_square(start_row, start_col, square_n):
             #(0, 0)으로 가져와서 변환 진행
             o_row, o_col = row - start_row, col - start_col
 
-            #좌표 변환
-            r_row, r_col = o_col, square_n - o_row - 1
+            debug = 1
 
-            #다시 원래 좌표로
+            #좌표 변환 (회전)
+            r_row = o_col
+            r_col = square_n - o_row - 1
+
+            debug = 1
+
+            #다시 원래 좌표 위치로
             temp[r_row + start_row][r_col + start_col] = MAP[row][col]
+
+
 
 
 
@@ -201,7 +225,7 @@ def rotate():
             temp[row][col] = 0
     # 회전을 진행
 
-    # 1 십자 모양 회전
+    # 1 십자 모양 반시계 회전
 
     for row in range(n):
         for col in range(n):
@@ -211,7 +235,7 @@ def rotate():
             elif col == n // 2:
                 temp[col][row] = MAP[row][col]
 
-    # 2 사각형 회전
+    # 2 사각형 시계 회전
     sqaure_n = n // 2
     rotate_square(0, 0, sqaure_n)
     rotate_square(0, sqaure_n + 1, sqaure_n)
