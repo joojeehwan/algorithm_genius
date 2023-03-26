@@ -54,11 +54,11 @@ int solution(int n, int s, int a, int b, vector<vector<int>> fares) {
     vector<int> S(n+1, 0xffffff);  
     dijkstra(S, graph, n, s); 
 
-    //A로부터 모든 정점까지의 최단경로
+    //A로부터 모든 정점까지의 최단경로  A -> i
     vector<int> A(n+1, 0xffffff);
     dijkstra(A, graph, n, a); 
 
-    //B로부터 모든 정점까지의 최단경로
+    //B로부터 모든 정점까지의 최단경로  B -> i
     vector<int> B(n+1, 0xffffff);
     dijkstra(B, graph, n, b); 
 
