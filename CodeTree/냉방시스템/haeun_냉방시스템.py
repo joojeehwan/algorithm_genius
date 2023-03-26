@@ -70,51 +70,50 @@ def is_finish():
     return True
 
 
-# 이 위치에 갈 수 있는지 본다.
-# 1. 0 - N 사이인지
-# 2. 벽이 있는지
-def is_possible(row, col, d):
-    if not (0 <= row < N and 0 <= col < N):
-        return False
-    if wall[row][col][d]:
-        return False
-    return True
+def in_range(row, col):
+    return 0 <= row < N and 0 <= col < N
+
+
+# delta의 차이를 통해 대각선 위치에 갈 수 있는지 판단할 때,
+# 수직 이동일 경우 지금 좌, 우 인지
+# 수평 이동일 경우 지금 상, 하 인지 판단.
+def dia_dir(dx, dy):
+    for d in range(4):
+        if dx == dr[d] and dy == dc[d]:
+            return d
 
 
 # 한개의 위치당 3개의 위치에 갈 수 있는지 본다.
 # 하드코딩...
 def check(row, col, air_d):
-    p1 = [False, row+dr[air_d], col+dc[air_d]]  # 갈 수 있는지 여부와 위치. (에어컨방향으로 바로 다음)
-    p2 = [False, -1, -1]  # p1의 왼쪽 또는 위
-    p3 = [False, -1, -1]  # p1의 오른쪽 또는 아래
+    next_pos = []
 
-    # 이 위치에서 에어컨 방향으로 바로 다음에 벽이 있는지와, 범위 체크
-    if not wall[row][col][air_d] and 0 <= p1[1] < N and 0 <= p1[2] < N:
-        p1[0] = True
+    # 이 위치에서 에어컨 방향으로 바로 다음에 벽이 있는지와, 범위 체크 (직진)
+    if not wall[row][col][air_d] and in_range(row+dr[air_d], col+dc[air_d]):
+        next_pos.append([True, row+dr[air_d], col+dc[air_d]])
+    else:
+        next_pos.append([False])
 
-    sub_d = (air_d+2) % 4
-    if air_d == 0:
-        if not wall[row][col][1] and is_possible(row-1, col-1, sub_d):
-            p2 = [True, row-1, col-1]
-        if not wall[row][col][3] and is_possible(row+1, col-1, sub_d):
-            p3 = [True, row+1, col-1]
-    elif air_d == 1:
-        if not wall[row][col][0] and is_possible(row-1, col-1, sub_d):
-            p2 = [True, row-1, col-1]
-        if not wall[row][col][2] and is_possible(row-1, col+1, sub_d):
-            p3 = [True, row-1, col+1]
-    elif air_d == 2:
-        if not wall[row][col][1] and is_possible(row-1, col+1, sub_d):
-            p2 = [True, row-1, col+1]
-        if not wall[row][col][3] and is_possible(row+1, col+1, sub_d):
-            p3 = [True, row+1, col+1]
-    elif air_d == 3:
-        if not wall[row][col][0] and is_possible(row+1, col-1, sub_d):
-            p2 = [True, row+1, col-1]
-        if not wall[row][col][2] and is_possible(row+1, col+1, sub_d):
-            p3 = [True, row+1, col+1]
+    # 대각선 2 자리 가능한지 체크
+    # air_d = [좌, 상, 우, 하]
+    if air_d % 2 == 0:  # 에어컨 방향이 수평 이동인 경우
+        n_col = col + dc[air_d]  # 다음 열로 넘어간건 2자리 모두 똑같다.
+        for n_row in [row-1, row+1]:  # 다음 열의 위, 아래를 본다.
+            if in_range(n_row, n_col) and not wall[row][col][dia_dir(n_row - row, 0)]\
+                    and not wall[n_row][col][air_d]:
+                next_pos.append([True, n_row, n_col])
+            else:
+                next_pos.append([False])
+    else: # 에어컨 방향이 수직 이동인 경우
+        n_row = row + dr[air_d]  # 다음 행으로 넘어간건 2자리 모두 똑같다.
+        for n_col in [col - 1, col + 1]:  # 다음 행의 양 옆을 본다.
+            if in_range(n_row, n_col) and not wall[row][col][dia_dir(0, n_col-col)] \
+                    and not wall[row][n_col][air_d]:
+                next_pos.append([True, n_row, n_col])
+            else:
+                next_pos.append([False])
 
-    return [p1, p2, p3]
+    return next_pos
 
 
 # 1. 모든 에어컨에서 바람이 나온다.(끝판왕)
@@ -137,6 +136,7 @@ def wind():
         for c in range(N):
             cool[r][c] += plus[r][c]
 
+
 # 2. 시원함이 '동시에' 섞인다.
 def mix():
     res = [[0] * N for _ in range(N)]  # 섞인 결과
@@ -147,7 +147,7 @@ def mix():
 
             for d in range(4):
                 nr, nc = r + dr[d], c + dc[d]
-                if not (0 <= nr < N and 0 <= nc < N):
+                if not in_range(nr, nc):
                     continue
                 if wall[r][c][d]:
                     continue
