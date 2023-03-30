@@ -24,6 +24,7 @@ N개의 에너지 구슬이 일렬로 놓여져 있고, 에너지 구슬을 이�
 def dfs(SUM):
 
     global ans
+
     #base 조건
     if len(weights) == 2:
         ans = max(ans, SUM)

@@ -25,7 +25,7 @@ MAP = [[] for _ in range(n + 1)]
 # 간선(노드와 노드의 연결)의 갯수 만큼 반복이 이루어지겠지
 for _ in range(m) :
     frm, to , cost = map(int, input().split())
-    MAP[frm].append((to, cost))
+    MAP[frm].append((to, cost)) # ?! ㅇㅣ런식으로 데이터를 정리합니다.
 
 
 #다익스트라에서 최소힙을 사용하는 이유?! 최단거리 테이블에서 거리 갱신 이후에, 가장 작은 값을 pop 하기 위함.
@@ -47,6 +47,7 @@ def dijkstra(startNode):
         # 가지치기 1
         # 기존에 여기 까지 오는데 오는 거리보다, 현재 위치에서 다음 노드로 가는 거리가 더 긴곳?!
         # 굳이 가보지 않아도 된다. 우리는 최단 거리를 구하고 있기 때문에
+        # 존재이유 알아오기
         if distance[now] < dist :
             continue
 
@@ -58,7 +59,7 @@ def dijkstra(startNode):
             #선택된 노드를 거쳐서 가는 것이 현재 가는 거리보다 더 작을 떄만 값을 갱신
             if cost < distance[next_node_number] :
                 distance[next_node_number] = cost
-                heapq.heappust(q, (cost, next_node_number))
+                heapq.heappush(q, (cost, next_node_number))
 
 dijkstra(start_node)
 
