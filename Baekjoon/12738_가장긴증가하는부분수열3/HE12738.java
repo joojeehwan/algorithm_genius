@@ -23,7 +23,7 @@ public class HE12738 {
 		// 해당 길이의 마지막 수가 작은지 비교하기 위해 MAX값을 넣는다.
 		Arrays.fill(min, Integer.MAX_VALUE);
 
-		// nums를 쭉 돌면서 DP, min을 완성시킨다.
+		// nums를 쭉 돌면서 min을 완성시킨다.
 		for(int i = 1; i <= N; i++) {
 			// 이분 탐색으로 min 안에서 나보다 작은 값중 가장 큰 값을 찾아낸다.(lower bound)
 			// x는 min의 idx 값이다.
@@ -40,7 +40,7 @@ public class HE12738 {
 //			System.out.println(nums[i] + "보다 작은 숫자 중 가장 큰 숫자의 인덱스 low : " + low);
 			if (min[low+1] > nums[i]) min[low+1] = nums[i];
 		}
-		
+
 		// min을 뒤에서 돌면서 MAX가 아닌 최초의 idx(길이)를 출력한다.
 		for(int i = N; i > 0; i--) {
 			if (min[i] != Integer.MAX_VALUE) {

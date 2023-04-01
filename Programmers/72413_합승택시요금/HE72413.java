@@ -31,6 +31,8 @@ class Solution {
 
         while(!q.isEmpty()) {
             Node now = q.poll();
+            
+            // cost가 0이면 pass 가능
 
             for(int i = 1; i <= N; i++) {
                 // distance[i] = s에서 i 까지의 기존 거리
@@ -61,12 +63,12 @@ class Solution {
             cost[d][c] = f;
         }
 
-
         int[] solo = dijkstra(s);
         int Muji = solo[a];
         int Apeach = solo[b];
         int together = Integer.MAX_VALUE;
         for(int i = 1; i <= n; i++) {
+        	// i -> A,B 말고 A-> 전체, B -> 전체 로 구하면 다익스트라 3번만 호출 가능 
             // 합승하는게 좋은지 봐볼거임.
             if (i == s) continue;
             int sToi = solo[i]; // s부터 i 까지의 거리를 기반으로

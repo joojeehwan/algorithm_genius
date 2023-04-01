@@ -14,6 +14,7 @@ break_belt(b_num) 함수: O(M) 시간이 걸립니다. 이 함수는 벨트를 �
 
 """
 
+
 class Box:
     def __init__(self, id, weight, prev=None, next=None):
         self.id = id
