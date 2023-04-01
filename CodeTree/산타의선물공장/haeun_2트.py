@@ -80,28 +80,28 @@ def unload_box(w_max):
             continue
         if head[b_idx] == 0:
             continue
-
-        original_head = head[b_idx]
-        original_tail = tail[b_idx]
-
-        # 머리를 바꾸고(nxt[head]가 머리가 됨)
-        if nxt[original_head]:
-            head[b_idx] = nxt[original_head]
-            prv[head[b_idx]] = 0
-
-        if weight[original_head] <= w_max:
-            total += weight[original_head]
-            belt[original_head] = None
-            # 상자가 하나 있던 경우
-            if original_head == original_tail:
+        b_head = head[b_idx]
+        if weight[b_head] <= w_max:
+            total += weight[b_head]
+            belt[b_head] = None
+            if b_head == tail[b_idx]:
+                # 상자가 하나 있던 경우
                 head[b_idx] = tail[b_idx] = 0
+            else:
+                # b_head의 다음이 머리가 된다.
+                head[b_idx] = nxt[b_head]
+                prv[head[b_idx]] = 0
         else:
-            if original_head != original_tail:
-                # 꼬리를 바꾼다(original_head가 꼬리가 됨)
-                prv[original_head] = original_tail
-                nxt[original_tail] = original_head
-                tail[b_idx] = original_head
-                nxt[original_head] = 0
+            if b_head != tail[b_idx]:
+                # 머리를 바꾸고(nxt[head]가 머리가 됨)
+                head[b_idx] = nxt[b_head]
+                prv[head[b_idx]] = 0
+
+                # 꼬리를 바꾼다(b_head가 꼬리가 됨)
+                prv[b_head] = tail[b_idx]
+                nxt[tail[b_idx]] = b_head
+                tail[b_idx] = b_head
+                nxt[b_head] = 0
         # print_belt(b_idx)
     print(total)
 
