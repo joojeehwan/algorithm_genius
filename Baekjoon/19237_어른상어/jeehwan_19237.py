@@ -31,11 +31,14 @@ k시간 만큼 상어의 냄새는 남아있음
 priorities : 미리 정해진 방향정보를 저장할 삼차원 리스트 , priorities[상어번호][이동방향][방향 별 우선순위] = 이동방향
 => 해당 방향으로 진행하지 못할 경우 , "방항 별 우선순위"의 인덱스 값을 변화시켜, 상어의 다음 이동방향을 구한다.  
 
-smell : 현재 시간에 냄새의 상황을 보여주는 이차원 리스트 , smell [row][col] = [상어번호, 남은 냄새 시간] 
+
+smell : 현재 시간에 냄새의 상황을 보여주는 이차원 리스트 , smell [row][col] = [상어번호, 남은 냄새 시간]
                                                  => smell[row][col][0] = 해당 row, col의 상어번호
                                                  => smell[row][col][1] = 해당 row, col의 남은 냄새 시간
-
+                                                 
 data : 상어의 현재 위치를 나타내는 이차원 리스트(MAP), data[row][col] = row, col에 위치하고 있는 상어 번호
+
+directions : 상어의 현재 방향
 
 저 3개의 data 구조가 어떻게 이루어지는 파악하는게 중요,,!
 
@@ -115,30 +118,43 @@ def move():
                 found = False
                 #일단 냄새가 존재하지 않는 곳인지 확인하기
                 for index in range(4):
-                    # prioritites엔 여러 상의 정보가 담김, 그중에서 data[row][col] - 1는 상어 번호는 1 부터 시작이지만 index는 아니라서!
-                    # 상어에 맞는 우선순위를 찾고, 그 다음에 dir-1 은 dir은 방향을 나타냄 1~4 그러나 이것도 index로 들어가서 찾아야 하니 -1을 한것
-                    # 마지막 index는 그러한 우선순위가 4개씩 있는데(가로로) 그것을 탐색하게 하는 키워드 인것! 여기서도 -1을 하는 이유는
-                    # dr, dc 델타배열에서 index값에 맞게 맞는 방향을 찾기 위함!
+                    # prioritites 자료구조 분석
+                    # data[row][col] - 1 :  상어 번호. 데이터는 1 부터 시작이지만, prioritites는 0부터 시작하는 index 라서 -1을 함.
+                    # dir-1 : 현재 상어의 이동방향.  해당 상어의 방향도 1부터 시작 하지만, prioritites 0부터 시작하는 index 라서 -1을 함.
+                    # index : 현재 방향 별 이동 우선순위.
+                    # prioritites[data[row][col] - 1][dir-1][index] - 1 에서 마지막에 -1을 하는 이유!? "상어번호별"의 "현재 방향"에 따른 "이동 우선순위" 도 1부터 시작하기에! 인덱스를 맞추기 위함.
                     next_row = row + dr[prioritites[data[row][col] - 1][dir-1][index] - 1]
                     next_col = col + dc[prioritites[data[row][col] - 1][dir-1][index] - 1]
                     #일단 장외인지 확인
                     if 0 <= next_row < n and 0 <= next_col < n:
                         if smell[next_row][next_col][1] == 0 : #냄새가 나지 않는 곳이라면
-                            #해당 상어의 방향 이동시키기
-                            directions[data[row][col] -1 ] = prioritites[data[row][col] - 1][dir - 1][index]
+                            # 해당 상어의 방향을 이동을 했으니, "상어번호별"의 "현재 방향"에 따른 "이동 우선순위" 에 따른 방향으로 바꾼다!
+                            # directions은 항상 상어의 현재 방향을 기억하는 배열임.
+
+                            directions[data[row][col] -1] = prioritites[data[row][col] - 1][dir - 1][index]
+
                             # (만약 이미 다른 상어가 있다면 번호가 낮은 상어가 들어가도록)
                             # 상어 이동시키기
 
+                            #상어가 아무도 없는 경우는 그냥 들어간다. 
                             if new_data[next_row][next_col] == 0:
                                 new_data[next_row][next_col] = data[row][col]
+                                
+                            # 상어가 존재하는 경우는 더 낮은 번호의 상어가 들어갈 수 있도록 함
+                            # 여기서 주의 min의 비교는 data[row][col]와 new_data[next_row][next_col]를 하는 것!
+                            # new_data[row][col] 와 new_data[next_row][next_col]를 하는 것이 아님.
                             else:
                                 new_data[next_row][next_col] = min(data[row][col], new_data[next_row][next_col])
                             found = True
+                            # 격자를 탐색하면서, 그 다음
                             break
+                            
+                # 해당 found 변수를 통해, 4방향 탐색 이후에도 모두 냄새가 있는 경우를 체크해 
+                # 모두 냄새가 있는 경우엔 continue를 타지 못해, continue 아래의 부분 로직이 실행되도록
                 if found:
                     continue
-                #주변에 모두 냄새가 남아있다면, 자신의 냄새가 있는 곳으로 이동
 
+                #4방향 모두 들러봤는데도, 주변에 모두 냄새가 남아있다면, 자신의 냄새가 있는 곳으로 이동
                 for index in range(4):
                     next_row = row + dr[prioritites[data[row][col] - 1][dir - 1][index] - 1]
                     next_col = col + dc[prioritites[data[row][col] - 1][dir - 1][index] - 1]

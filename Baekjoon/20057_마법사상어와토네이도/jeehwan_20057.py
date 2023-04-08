@@ -21,6 +21,8 @@
 미리, 토네이도 이동 4방향에 따른 y 위치를 기준으로 y의 모래가 이동하는 table을 구현
 
 
+결국 구해야 하는 건, 격자박으로 나간 모래의 양을 구해야 한다.
+
 참고)
 
 https://www.youtube.com/channel/UC_KRcBNnFQoN6EsvG87H6cg
@@ -72,9 +74,9 @@ rate = [1, 1, 2, 2, 5, 7, 7, 10, 10]
 def movingSand(row, col, dir):
     answer = 0 #격자 밖의 모래양
     sand = MAP[row][col]
-    total_ratio_sands = 0 #비율 이외의 모래들이 모이는! sand에서 빼면 알파의 값이 되겟지
+    total_ratio_sands = 0 #비율의 모래들이 모이는! sand에서 빼면 알파의 값이 되겟지
 
-    #비율 모래 이동
+    #1. 비율 모래 이동
     #9가지 비율의 모래 날림.
     for i in range(9):
         next_row = row + sand_row[dir][i]
@@ -86,9 +88,11 @@ def movingSand(row, col, dir):
         if not (0 <= next_row < n and 0 <= next_col < n):
             answer += ratio_sand
             continue
-        #기존에 있던 모래에 더해진다.
+        # 격자 밖인 경우엔, 아래 로직을 탈 필요 없다.
+        # 기존에 있던 모래에 더해진다. => 격자 밖의 모래를 모하러?!
         MAP[next_row][next_col] += ratio_sand
 
+    #2. 비율 이외의 모래 이동
     #비율 외 알파로 가는 모래 이동 => 정정당당히 좌 하 우 상의 이동
     next_row = row + dr[dir]
     next_col = col + dc[dir]
