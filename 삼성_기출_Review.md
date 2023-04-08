@@ -124,6 +124,57 @@ def search_spiral():
 
 ![KakaoTalk_20230408_122026145_01 (1)](삼성_기출_Review.assets/KakaoTalk_20230408_122026145_01 (1).png)
 
+
+
+* 술래잡기
+
+````python
+# 2개씩 잘러서 본것. 
+def initialize_seeker_path():
+
+    # 시작 위치와 방향
+    # 해당 방향으로 이동할 수를 설정
+
+    now_row, now_col = n // 2, n // 2
+    move_dir, move_num = 0, 1
+
+    debug = 1
+    #둘 중 하나라도 참이면 가능...! 즉
+    # 즉 둘다 0, 0 일때만, 거짓이 나와서 반복이 종료.
+    while now_row or now_col:
+
+        # 1 : 0,
+        # 2 : 0 , 1
+        for _ in range(move_num):
+            seeker_next_dir[now_row][now_col] = move_dir
+
+            now_row = now_row + dr[move_dir]
+            now_col = now_col + dc[move_dir]
+
+            # move_dir이 음수가 안나오도록 하기 위함
+            # 모둘려 연산을 하는게 아니고, 아래에선 값을 넣는 경우 니깐!
+            # 정방향으로 이동을 하면서, 동시에 같이 역방향도 같이 계산을 하는 구나.
+            if move_dir < 2 :  #0, 1, 2, 3
+                seeker_rev_dir[now_row][now_col] = move_dir + 2
+            else:
+                seeker_rev_dir[now_row][now_col] = move_dir - 2
+
+            #(0, 0) 오게 되면 멈추기
+            if not now_row and not now_col:
+                break
+
+        #방향 바꾸기
+        move_dir = (move_dir + 1) % 4
+
+        # 위, 아래가 될 떄 1씩 증가하면서 더 가야 한다.
+        if move_dir == 0 or move_dir == 2:
+            move_num += 1
+````
+
+
+
+
+
 ##### 방식2 - visited배열 활용
 
 * 마법사상어와 블리자드
@@ -968,6 +1019,45 @@ while True:
         #위에 if절에서 더이상 먹을 물고기를 bfs를 통해서 담지 못했으니!
         break
 ````
+
+##### 예술성
+
+```python
+ bfs (그룹의 개수 counting) // dfs로도 해보기
+def bfs(row, col):
+
+    #visited = [[False] * n for _ in range(n)]
+    q = deque() # 큐 생성
+    q.append((row, col)) #초기값 세팅
+    visited[row][col] = True #visted 배열 체크
+
+    #while문을 통해, bfs 시작
+    while q: # q안에 값이 있는 동안 아래의 로직 수행
+
+        #q에서 값 꺼내기
+        now_row, now_col = q.popleft()
+
+        #4방향으로 이동 => 인접한 4방향
+        for k in range(4):
+
+            #다음 방향으로 아동
+            next_row = now_row + dr[k]
+            next_col = now_col + dc[k]
+
+            #이동 후 범위 체크
+            if 0 <= next_row < n and 0 <= next_col < n:
+                # 한번도 가지 않은 곳 이면서, 현재 그룹의 번호와 값은 것들만 => 그룹화를 하기 위함
+                if not visited[next_row][next_col] and (MAP[now_row][now_col] == MAP[next_row][next_col]):
+                    visited[next_row][next_col] = True
+                    # 각 칸의 그룹 번호를 기록함
+                    group[next_row][next_col] = group_n
+                    # 그룹번호를 인덱스로 하여, 몇 번 그룹이 몇개의 칸의 범위를 차지하고 있는지 기록 for 조화로움 계산시 사용
+                    group_cnt[group_n] += 1
+                    # 다음 bfs를 위한 q 추가
+                    q.append((next_row, next_col))
+```
+
+
 
 
 
