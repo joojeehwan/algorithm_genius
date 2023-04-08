@@ -117,6 +117,8 @@ def packman_move():
     # print(px,py)
 
     # 가장 많이 먹는 경로 찾기
+    # 해당 루트를 for문을 통해 순차적으로 넣는것만으로도,
+    # 문제의 우선순위를 만족, why?! dr / dc를 그렇게 설정해둠.
     for route in packman_routes:
 
         nx, ny = px, py
@@ -180,7 +182,11 @@ def monster_copy_done():
             for k in range(8):
                 grid[x][y][k] += copied_monster[x][y][k]
 
-#팩맨 경로 구하기 (재귀함수를 통해 모든 경우의수 담기, 64가지)
+# 팩맨 경로 구하기 (재귀함수를 통해 모든 경우의수 담기, 64가지)
+# 이 번호는 차례대로 0부터 쌓이게 된다. 0 , 1 , 2가 순차적으로 
+# 그렇다는 건 dr / dc를 문제의 우선순위에 맞게 적는다면, 
+# 해당 번호들을 dr/dc에 넣는 것만으로도, 문제의 우선순위를 맞출 수 있어
+
 def set_packman_routes(route):
     if len(route) == 3:
         packman_routes.append(route)
@@ -220,13 +226,13 @@ pdxs, pdys = [-1, 0, 1, 0], [0, -1, 0, 1]
 # 팩맨 경로 모두 구해두기
 set_packman_routes([])
 
-# print(packman_routes)
+print(packman_routes)
 # print("초기 몬스터")
 # print(*grid,sep='\n',end='\n\n')
 for _ in range(t):
     # 몬스터 복제
-
     copied_monster = monster_copy()
+
     # 몬스터 이동
     monster_move()
     # print("몬스터 이동")

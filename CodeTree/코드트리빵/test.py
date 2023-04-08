@@ -169,3 +169,11 @@ def iceberg_rotate(level) :
             rotating(start_r, start_c + rotate_len, rotate_len, 1)
             rotating(start_r + rotate_len, start_c + rotate_len, rotate_len, 2)
             rotating(start_r + rotate_len, start_c, rotate_len, 3)
+
+
+
+
+grid = [[[0 for _ in range(8)] for _ in range(5)] for _ in range(5)]
+
+grid2 = [[[] for _ in range(5)] for _ in range(5)]
+

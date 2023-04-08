@@ -971,7 +971,7 @@ while True:
 
 
 
-### lambda /정렬
+### lambda / 정렬
 
 ```python
 data = [(1, 3), (0, 3), (1, 4), (1, 5), (0, 1), (2, 4)]
@@ -1902,4 +1902,187 @@ print(answer)
 
 
 
-1. 문제의 요구사항을 함수로 풀어 모듈화
+1. 이차원 배열이라도, 복사를 할 때는 global로 가져와야 한다. 
+
+````python
+# 복사할 때는, global로 해서 가져와야 한다.
+
+def func(lst):
+    res = []
+    global test
+    #global로 가져오면 여기서 또 에러 나네
+    test[0] = 1
+
+    #밑에 복사가 들어가면, 오류가 난다. ... 왜그러는걱지?!
+    test = lst[:]
+
+    return res
+
+test = []
+temp = func([1,2,3,4,5])
+````
+
+
+
+````python
+
+    
+import copy
+
+# 몬스터가 갈 수 있는 8방향 조회
+def next_pos(x, y, now_d):
+    for c_d in range(8):
+        nd = (now_d + c_d + 8) % 8
+        nx, ny = x + dxs[nd], y + dys[nd]
+
+        # 범위 안 , 시체 없고, 팩맨이 없는 경우
+        if 1 <= nx < 5 and 1 <= ny < 5 and (nx, ny) != (px, py) and not graves[nx][ny]:
+            return (nx, ny, nd)
+
+    # 한바퀴 다돈 경우, 이동없이 원래 위치 반환
+    return (x, y, now_d)
+
+
+#몬스터 이동
+def monster_move():
+    global grid
+    #몬스터 이동을 저장할 임시 배열 생성, 그 방향을 보고 있는 몬스터의 수
+    new_grid = [[[0 for _ in range(8)] for _ in range(5)] for _ in range(5)]
+
+    for i in range(1, 5):
+        for j in range(1, 5):
+            for md in range(8):
+                x, y, nd = next_pos(i, j, md)
+                new_grid[x][y][nd] += grid[i][j][md]
+
+    #원래 그리드에 몬스터의 이동 적용
+    grid = copy.deepcopy(new_grid)
+    
+
+
+#몬스터 복제
+def monster_copy():
+    global grid
+    return copy.deepcopy(grid)  
+
+````
+
+
+
+2. 만약 가장 많이 먹을 수 있는 방향이 여러개라면 **상-좌-하-우**의 우선순위를 가지며 우선순위가 높은 순서대로 배열하면 "상상상 - 상상좌 - 상상하 - 상상우 - 상좌상 - 상좌좌 - 상좌하 - ..."과 같이 나타낼 수 있습니다. 이동하는 과정에 격자 바깥을 나가는 경우는 고려하지 않습니다.
+
+   예시의 경우에서는 상우우, 우상우, 우우상으로 이동하면 총 2마리의 몬스터를 먹을 수 있기 때문에 이중 우선순위가 제일 높은 상우우 방향으로 움직입니다. 이때 이동할 때 이동하는 칸에 있는 몬스터는 모두 먹어치운 뒤, 그 자리에 몬스터의 시체를 남깁니다.
+
+````python
+#이거 어떻게 구현할껀데?!
+
+
+
+'''
+
+dfs를 통해 나온 경우의 수는 순서대로 배열이 된다. 
+그 경우의 수를 dr / dc를 미리 "상 좌 하 우"로 맞춰두면
+자연스레 반복문을 통해 앞에서부터 선택된 녀석이 문제의 주어진 우선순위를 만족하는 것
+
+'''
+
+packman_routes = []
+# 팩맨 경로 구하기 (재귀함수를 통해 모든 경우의수 담기, 64가지)
+# 이 번호는 차례대로 0부터 쌓이게 된다. 0 , 1 , 2가 순차적으로 
+# 그렇다는 건 dr / dc를 문제의 우선순위에 맞게 적는다면, 
+# 해당 번호들을 dr/dc에 넣는 것만으로도, 문제의 우선순위를 맞출 수 있어
+def set_packman_routes(route):
+    if len(route) == 3:
+        packman_routes.append(route)
+        return
+
+    # 4방향으로 탐색이 가능.
+    for i in range(4):
+        set_packman_routes(route + [i])
+
+#팩맨 움직임
+def packman_move():
+
+    global px, py, grid
+    result = -1
+    result_route = []
+    # print(px,py)
+
+    # 가장 많이 먹는 경로 찾기
+    # 해당 루트를 for문을 통해 순차적으로 넣는것만으로도,
+    # 문제의 우선순위를 만족, why?! dr / dc를 그렇게 설정해둠.
+    for route in packman_routes:
+
+        nx, ny = px, py
+
+        temp = 0
+        # 정상 경로인지 확인
+        flag = True
+
+        #이동을 기록할 기록 배열
+        visited = [[False for _ in range(5)] for _ in range(5)]
+
+        #팩맨 이동 경로 인덱스(dir), 자연스레 3번의 움직임이 가능
+        for pd in route:
+            nx, ny = pdxs[pd] + nx, pdys[pd] + ny
+            # 이동후 범위 생각
+
+            # 격자 안으로 이동한 경우
+            if 1 <= nx < 5 and 1 <= ny < 5:
+                #한번 간곳 제외
+                if visited[nx][ny]:
+                    continue
+                temp += sum(grid[nx][ny])
+                visited[nx][ny] = True
+            # 격자 밖으로 이동한 경우 새로운 경로
+            else:
+                flag = False
+                #그 다음 route로 진행할 수 있도록 break
+                break
+        # 가장 많이 먹는 경우
+        if flag and temp > result:
+            result = temp
+            result_route = route
+
+    # 가장 많이 먹는 경로로 이동
+    for pd in result_route:
+        px, py = px + pdxs[pd], py + pdys[pd]
+
+        # 방향 상관없는 그 격자내에 있는 모든 몬스터의 수
+        if sum(grid[px][py]):
+            # 방향을 고려해, 해당 격자의 몬스터의 수를 0 으로 처리, 팩맨에게 이미 먹혓으니
+            for j in range(8):
+                grid[px][py][j] = 0
+            # 3을 할당하는 이유, 시체 3  => 2 1턴  // 2 => 1 1 턴 , 총 2턴
+            # 3턴째 되는 경우부터 이동이 가능 해짐. 1 => 0 1턴 (3턴째)
+            # 0이 되는 경우 next_pos에서  not 조건에 의해  True로 바뀌면서 이동이 가능해짐
+            graves[px][py] = 3
+
+
+````
+
+
+
+
+
+3. 데이터 기본 자료 세팅 => 이차원 배열안의 값이 리스트
+
+````
+# 방향의 몬스터 수
+grid = [[[0 for _ in range(8)] for _ in range(5)] for _ in range(5)]
+
+
+#비교
+
+grid2 = [[[] for _ in range(5)] for _ in range(5)]
+
+#총의 상태 그래프
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] != 0:
+            grid2[i][j].append(graph[i][j])
+
+
+
+````
+
