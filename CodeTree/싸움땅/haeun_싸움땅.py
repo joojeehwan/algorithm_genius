@@ -111,6 +111,8 @@ def lost(l):
         loser.g = 0
 
     for i in range(4):
+        # [이런실수하지말라고🤬]
+        # n_dir이 아니라 loser.d에 바로 저장해서 0 > 1 > 2 가 아니라 0 > 1 > 3 순으로 방향 돌아감..
         n_dir = (loser.d + i) % 4
         n_row, n_col = loser.r + dr[n_dir], loser.c + dc[n_dir]
         # 이미 플레이어가 있거나 격자 밖인 경우 오른쪽으로 90도 회전하며 빈칸이 있으면 이동.
