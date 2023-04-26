@@ -6,3 +6,4 @@ test.py
 .project
 .DS_Store
 /bin1/
+.pydevproject
