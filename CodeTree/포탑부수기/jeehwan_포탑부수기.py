@@ -21,13 +21,14 @@ row + col의 합이 같다.
 
 
 
+
 2. 격자 밖으로 이동하면, 연결되는 격자
 
 => 모듈러
 
 아 그떄, 하은이가 물어봤던 부분,
 
- ( now_row + dr[i] + n ) % n
+ ( now_row + dr[i] + n) % n
 
  여기서 n 을 굳이 더하는 이유는?!
 
@@ -40,14 +41,20 @@ row + col의 합이 같다.
 
  즉, ub(unexpectd behavior), 언어에 따라 값이 다르게 나온다.
 
+
+
+
 3. 공격대상 선정시 "우 하 좌 상"의 우선선위로 경로를 선택
 
 => dr / dc를 초기부터 문제에 주어진 대로 설정
 
 
+
+
 4. bfs의 최단경로구하는 skill
 
  => "역추적 "
+
 
 
 '''
@@ -145,6 +152,8 @@ def select_target():
 
             row = sum - col
 
+            # 이걸 왜 하지?!
+            # row 가 sum - col이라서
             if row < 0 or row >= N:
                 continue
 
@@ -225,7 +234,7 @@ def tryRaser(attacker, target):
 def bomb(attacker, target):
 
     for dr in (-1, 0, 1):
-        for dc in range(-1, 0, 1):
+        for dc in (-1, 0, 1):
 
             next_row = (target[0] + dr + N) % N
             next_col = (target[1] + dc + M) % M
