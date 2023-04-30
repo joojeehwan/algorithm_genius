@@ -56,7 +56,6 @@ public class Eunju_118667 {
                 }
                 cnt+=1;
             }
-
             //최대로 작업을 반복해서 해도 값이 안나오면 -1 리턴
             return cnt > maxCount ? -1 : cnt;
         }
