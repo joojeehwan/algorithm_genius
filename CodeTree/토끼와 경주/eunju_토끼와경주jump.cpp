@@ -106,8 +106,9 @@ void move_right(int* y, int* d) {  // x, y 에서 d 만큼 오른쪽 이동을 �
         *y = M-1;
     }
 }
+
 void move_left(int* y, int* d) {
-    if (*y - *d >= 0) { //y좌표에서 d만큼 움직인 좌표가 0보다 크거나 같으면 y좌표 0으로 갱신
+    if (*y-*d >= 0) { //y좌표에서 d만큼 완쪽으로 움직인 좌표가 0보다 크거나 같으면 y좌표 0으로 갱신
         *y -= *d;
         *d = 0;
     }
@@ -116,6 +117,7 @@ void move_left(int* y, int* d) {
         *y = 0;
     }
 }
+
 void move_up(int* x, int* d) {
     if (*x - *d >= 0) {
         *x -= *d;
@@ -145,7 +147,7 @@ pair<int,int> jump(int cx, int cy, int cd){
         int x = cx, y = cy;
         int d = cd % period;    //최종 움직여야 하는 거리
         move_right(&y, &d); //오른쪽 끝에 도달하는 경우
-        move_left(&y, &d);
+        move_left(&y, &d);  //남은 거리만큼 다시 움직여줌
         move_right(&y, &d);
         goals.push_back({ x, y });
     }
@@ -192,17 +194,17 @@ void race(){
     Rabbit selectedRabbit = pq.top(); pq.pop();
     int selectedIndex = rabbitIndex[selectedRabbit.pidi];
     checkRabbit[selectedIndex] = true;
-    //2. 토끼가 상하좌우 이동했을 때 4방향 위치 구하기
-    pos = priority_queue<pair<int,int>, vector<pair<int,int>>, compare2>(); //초기화
-    //주어진 electedRabbit.d 5칸을 다 이동 해야 함.
-    pair<int,int> movePos = jump(selectedRabbit.x,selectedRabbit.y ,distL[selectedIndex]);
 
-    
+
+    //2. 토끼가 상하좌우 이동했을 때 4방향 위치 구하기
+    //주어진 electedRabbit.d 5칸을 다 이동 해야 함.
+    pair<int,int> movePos = jump(selectedRabbit.x, selectedRabbit.y ,distL[selectedIndex]);
+
     //3. 우선순위가 높은 칸으로 토끼 좌표 변경시키기
     selectedRabbit.x = movePos.first;
     selectedRabbit.y = movePos.second;
     selectedRabbit.count +=1;
-    pos.pop();
+
 
     rabbit[selectedIndex] = selectedRabbit;
     pq.push(selectedRabbit);
@@ -211,7 +213,6 @@ void race(){
      for(int i=0; i<P; i++){
         if(i==selectedIndex) continue;
         score[i] += (selectedRabbit.x+1 + selectedRabbit.y+1);
-        // cout << "나머지 토끼들 점수 : "<<selectedRabbit.x +1 << ":"<<selectedRabbit.y +1<<endl;
     }
 
 }
@@ -224,9 +225,8 @@ void printMaxRabbitScore(){
 }
 
 void addBonusScore(){
+
     //5. 이번 k턴에 뽑혔던 토끼 구하기
-    // for(int i=0; i<P; i++)
-    //     cout << checkRabbit[i];
     afterKturn = priority_queue<Rabbit, vector<Rabbit>, compare3>();
     for(int i=0; i<P; i++)
         if(checkRabbit[i])
@@ -234,9 +234,6 @@ void addBonusScore(){
     
     Rabbit addSrabbit = afterKturn.top(); afterKturn.pop();
     score[rabbitIndex[addSrabbit.pidi]]+=S;
-
-    rabbit[rabbitIndex[addSrabbit.pidi]]= addSrabbit;
-
 }
 
 void solve(){
@@ -255,29 +252,32 @@ void solve(){
                 rabbitIndex.insert({rabbit[j].pidi, j});
             }
             break;
+
         case 200:  
             //* 경주 진행 단계
             cin >> K >> S;
+            //race 진행
             fill(checkRabbit, checkRabbit+2000, false); 
             pq = priority_queue<Rabbit, vector<Rabbit>, compare1>();
-            for(int j=0; j<P; j++)
-                pq.push(rabbit[j]);
-            for(int j=0; j<K; j++){
-                race();
-            }
+            for(int j=0; j<P; j++)  pq.push(rabbit[j]);
+            for(int j=0; j<K; j++)  race();
+            
             //마지막 턴이 끝나면 S점수 더해주기
             addBonusScore();
             break;
+
         case 300:
             //* 이동 거리 변경 단계
             cin >> pid_T >> L;
             double_L_distance();
             break;
+
         case 400:
             //* 최고 토끼 선정 단계
             //P마리의 토기 최종 점수 중 최댓값 출력
             printMaxRabbitScore();
             break;
+
         default:
             break;
         }
