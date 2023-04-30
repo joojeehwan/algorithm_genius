@@ -442,7 +442,7 @@ def player_fight():
 n ,m, k = map(int, input().split())
 #총의 정보
 graph = [list(map(int, input().split())) for _ in range(n)] # 0은 인간, -1은 빈칸, 나머지는 총
-guns = [[[] for _ in range(n)] for _ in range(n)]
+guns = [[[] for _ in range(n)] for _ in range(n)] # -1은 빈칸
 
 #총의 상태 그래프
 for i in range(n):
@@ -461,11 +461,11 @@ player_posit = [[]]
 #[x, y, 방향, 기본스텟, 총보유]
 for i in range(1, m+1):
     player[i] = list(map(int, input().split())) + [0]
-    player[i][0] -= 1
-    player[i][1] -= 1
+    player[i][0] -= 1 #0부터 index를 사용하기 위함
+    player[i][1] -= 1 #0부터 index를 사용하기 위함
     player_posit.append((player[i][0], player[i][1]))
 
-#사람이 없는 빈칸을 -1로 다시 변환
+#사람이 없는 빈칸을 -1로 다시 변환 =>원래 사람이 없는 빈칸이 0인데, 이를 사람으로 표시하기 위해 -1을 사용하는 것
 for i in range(n):
     for j in range(n):
         if graph[i][j] == 0 and (i,j) not in player_posit:
@@ -478,11 +478,15 @@ for num in range(k):
         x, y, d  = player[i][0], player[i][1], player[i][2]
         nx = x + dx[d]
         ny = y + dy[d]
-        #2-1 이동 칸에 총이 있는 경우 2-2플레이어가 있는 경우 1) 이긴 플레이어 2) 진 플레이어
+
+
+        #격자 밖으로 이동, 반대방향으로 이동
         if not (0 <= nx < n and 0 <= ny < n):
             nx = x - dx[d]
             ny = y - dy[d]
             d = (d + 2) % 4
+
+        #이동 한 칸에 총, 플레이어,빈칸인 3가지 경우로 분기 처리
 
         #이동 칸에 총이 있는 경우
         if graph[nx][ny] > 0:

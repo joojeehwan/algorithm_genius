@@ -47,6 +47,9 @@ def iceberg_rotate(level):
     # 4등분으로 반시계 방향으로 90' 회전하지만, 꼭 회전공식을 사용하지 않아도 된다.
     # 좌상, 우상, 우하, 좌하 격자 순대로 우 -> 하 -> 좌 -> 상의 방향으로 격자를 옮기는 것과 같은 행위다.
     # 이 생각을 떠올리긴 했지만, 4경우 모두 하나의 for 반복문 내에서 처리하려고 한 점이 더 돌아가게 만들었다.
+
+    # length가 전체 격자의 길이,
+    # 그 중에서 l_len만큼 잡아서, 그 안에 h_len만큼 회전
     for start_r in range(0, length, l_len):
         for start_c in range(0, length, l_len):
             rotating(start_r, start_c, h_len, 0)

@@ -24,10 +24,12 @@ LIS?!(최장 증가 부분 수열)
 # 풀이 1
 
 n = int(input())
+
 arr = list(map(int, input().split(" ")))
 
-
+#이건 upper도 lower도 아닌 정석 이분탐색
 def binary_search(start, end, target):
+
     if start > end:
         return start
 
@@ -35,8 +37,10 @@ def binary_search(start, end, target):
 
     if res[mid] > target:
         return binary_search(start, mid - 1, target)
+
     elif res[mid] == target:
         return mid
+
     else:
         return binary_search(mid + 1, end, target)
 

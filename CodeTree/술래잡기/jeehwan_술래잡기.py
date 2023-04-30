@@ -2,7 +2,6 @@
 
 2022 어려움 술래잡기
 
-
 '''
 
 #초기 입력
@@ -59,6 +58,9 @@ for _ in range(h):
 # 정중앙으로부터 (0,0) 까지 움직이는 술래의 경로를 계산
 # 이건 내가 예전에 구현한 visited 배열로 하는게 아니라, 
 # 2개씩 잘라서 늘려가는 방법
+
+
+# 2개씩 잘러서 본것. 
 def initialize_seeker_path():
 
     # 시작 위치와 방향
@@ -67,10 +69,13 @@ def initialize_seeker_path():
     now_row, now_col = n // 2, n // 2
     move_dir, move_num = 0, 1
 
+    debug = 1
     #둘 중 하나라도 참이면 가능...! 즉
     # 즉 둘다 0, 0 일때만, 거짓이 나와서 반복이 종료.
     while now_row or now_col:
 
+        # 1 : 0,
+        # 2 : 0 , 1
         for _ in range(move_num):
             seeker_next_dir[now_row][now_col] = move_dir
 
@@ -80,7 +85,7 @@ def initialize_seeker_path():
             # move_dir이 음수가 안나오도록 하기 위함
             # 모둘려 연산을 하는게 아니고, 아래에선 값을 넣는 경우 니깐!
             # 정방향으로 이동을 하면서, 동시에 같이 역방향도 같이 계산을 하는 구나.
-            if move_dir < 2 :
+            if move_dir < 2 :  #0, 1, 2, 3
                 seeker_rev_dir[now_row][now_col] = move_dir + 2
             else:
                 seeker_rev_dir[now_row][now_col] = move_dir - 2
@@ -95,6 +100,39 @@ def initialize_seeker_path():
         # 위, 아래가 될 떄 1씩 증가하면서 더 가야 한다.
         if move_dir == 0 or move_dir == 2:
             move_num += 1
+
+
+
+#vistied 배열
+'''
+
+def solve(row, col):
+
+    answer = 0
+    visited = [[False] * n for _ in range(n)]
+    dir = -1 #아무 방향 x, 방향은 0 ~ 4에 적용 되어 있음.
+    while True :
+        #(0,0)에 도착 => 토네이도의 이동을 멈춘다.
+        if row == 0 and col == 0:
+            break
+        visited[row][col] = True
+        next_dir = (dir + 1) % 4
+        next_row = row + dr[next_dir]
+        next_col = col + dc[next_dir]
+
+        if visited[next_row][next_col] :
+            #가려는 곳을 이미, 방문했기에 나선형을 만족하기 위해서, 다음 방향이 아닌, 이곳에 왓을때의 방향으로 다시
+            next_dir = dir
+            next_row = row + dr[next_dir]
+            next_col = col + dc[next_dir]
+
+        answer += movingSand(next_row, next_col, next_dir)
+        #여기서 dir이 바뀌게 되고...
+        row, col, dir = next_row, next_col, next_dir
+
+    return answer
+
+'''
 
 def hider_move(row, col, move_dir):
 
@@ -115,7 +153,7 @@ def hider_move(row, col, move_dir):
     # 그런 다음에 그 위치에 술래가 없으며 움직이기.
     # hiders에는 초기 입려만 담기고, 이후에는 그냥 그대로 두고! 
     # 나는 항상 MAP을 만들면 그 안에서, 다 해결하려 했는데
-    # 메모리를 더 사용하더라도, 위와 같이 만들어서 확실히 구분해서 하자.
+    # 메모리를 더 사용하더라도, 위와 같이 만들어서(ex, next_hiders) 확실히 구분해서 하자.
     if (next_row, next_col) != seeker_pos :
         next_hiders[next_row][next_col].append(move_dir)
     #술래가 있으면 더 움직이지 X
@@ -221,6 +259,7 @@ def get_score(trun):
 initialize_seeker_path()
 
 for trun in range(1, k + 1):
+
     hider_move_all()
 
     seeker_move()

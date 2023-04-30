@@ -87,31 +87,49 @@ n n n 0
 '''
 
 def solution(board, skill):
+    #누적합을 위한 새로운 배열을 만듬.
     tboard = [[0]*(len(board[0])+1) for _ in range(len(board)+1)]
 
     for typ, r1, c1, r2, c2, degree in skill:
-        tboard[r1][c1]+=(2*typ-3)*degree
-        tboard[r2+1][c2+1]+=(2*typ-3)*degree
-        tboard[r2+1][c1]-=(2*typ-3)*degree
-        tboard[r1][c2+1]-=(2*typ-3)*degree
-    #누적합 왼쪽에서 오른쪽
-    for i in range(1, len(tboard[0])):
-        tboard[0][i]+=tboard[0][i-1]
-    #누적합 위에서 아래
-    for i in range(1, len(tboard)):
-        tboard[i][0]+=tboard[i-1][0]
+        # tboard[r1][c1] += (2*typ-3)  *degree
+        # tboard[r2+1][c2+1] += (2*typ-3) * degree
+        # tboard[r2+1][c1] -= (2*typ-3) * degree
+        # tboard[r1][c2+1]-= (2*typ-3) * degree
 
-    for x in range(1, len(tboard)):
-        for y in range(1, len(tboard[0])):
-            tboard[x][y]+=tboard[x][y-1]+tboard[x-1][y]-tboard[x-1][y-1]
+        tboard[r1][c1] += degree if type == 2 else -degree
+        tboard[r1][c2 + 1] += -degree if type == 2 else degree
+        tboard[r2 + 1][c1] += -degree if type == 2 else degree
+        tboard[r2 + 1][c2 + 1] += degree if type == 2 else -degree
+
+    # 누적합 왼쪽에서 오른쪽,
+    # 행 기준 누적합
+    for row in range(len(tboard) - 1):
+        for col in range(len(tboard[0]) - 1) :
+            tboard[row][col + 1] += tboard[row][col]
+
+    # 누적합 위에서 아래
+    # 열 기준 누적합
+    for col in range(len(tboard[0]) - 1) :
+        for row in range(len(tboard) - 1) :
+            tboard[row + 1][col] += tboard[row][col]
+
+    # 기존 배열과의 합체
     ans = 0
-    for x in range(len(board)):
-        for y in range(len(board[0])):
-            if board[x][y]+tboard[x][y]>0: ans+=1
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            board[row][col] += tboard[row][col]
+            if board[row][col] > 0 :
+                ans += 1
+
     return ans
 
 
 
+
+
+#[[5,5,5,5,5],[5,5,5,5,5],[5,5,5,5,5],[5,5,5,5,5]]
+
+print(solution([[5,5,5,5,5],[5,5,5,5,5],[5,5,5,5,5],[5,5,5,5,5]], [[1,0,0,3,4,4],[1,2,0,2,3,2],[2,1,0,3,1,2],[1,0,1,3,3,1]] ))
 
 #다른 풀이
 
