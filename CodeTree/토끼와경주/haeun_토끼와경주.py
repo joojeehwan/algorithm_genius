@@ -259,9 +259,9 @@ def change_dist(r_pid, length):
 def get_best():
     max_score = 0
     for pid in rabbits:
-        max_score = max(max_score, rabbits[pid].score + total_score)
+        max_score = max(max_score, rabbits[pid].score)
 
-    print(max_score)
+    print(max_score  + total_score)
 
 
 def solution():
@@ -282,4 +282,3 @@ def solution():
 
 
 solution()
-print(f"4195908825 <= 맞는 정답")
