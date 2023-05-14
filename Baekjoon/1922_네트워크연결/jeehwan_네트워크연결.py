@@ -30,7 +30,6 @@ parent = [0] * (v + 1)
 for i in range(1, v + 1):
     parent[i] = i
 
-
 # find 연산 -> 해당 노드의 부모노드를 탐색
 def find(parent, node) :
 
@@ -53,6 +52,7 @@ def find(parent, x):
 
 #union 연산 -> 두 노드 묶어주기
 def union(parent, nodeA, nodeB) :
+
     nodeA = find(parent, nodeA)
     nodeB = find(parent, nodeB)
 

@@ -109,6 +109,6 @@ for _ in range(m):
         dir = (dir + 1) % 4
 
     elif dice[5] < MAP[row][col] : #반 시계 방향  dr, dr에서 +3을 더하면(index 이동) 반시계방향 이동
-        dir = (dir + 3) % 4
+        dir = (dir + 3) % 4  #^2
 
 print(ans)
