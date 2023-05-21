@@ -51,8 +51,11 @@ int move_block(int cnt){
             // 2 2 4 4 4 2 0 0 
             // 4 8 4 2 0 0 0 0 
             
-            //2 2 4 4 4 2
+            // 2 2 4 4 4 2
+
             // 2 4 4 4 2 2 
+            // 2 4
+
 
             // 오른쪽
             // 2 0 2 4 4 4 0 2
@@ -63,7 +66,7 @@ int move_block(int cnt){
             }
 
             // 다음숫자랑 같으면 합치고 그 다음 숫자를 다음 숫자랑 비교
-            vector<int> calculated;
+            vector<int> calculated; // 2 8 4 2
             for(int k=0; k<notzero.size(); k++){
                 if(notzero[k] == notzero[k+1] && k+1<notzero.size()){
                     calculated.push_back(notzero[k]*2);
@@ -73,6 +76,7 @@ int move_block(int cnt){
                     calculated.push_back(notzero[k]);
                 }
             }
+
             //남은 부분은 0으로 채워주기
             for(int k=calculated.size(); k<N; k++){
                 calculated.push_back(0);
@@ -84,7 +88,6 @@ int move_block(int cnt){
             
         
             //갱신된 배열로 board의 세로 값을 갱신
-            
             for(int j=0; j<calculated.size(); j++){
                 if(direction == 0 || direction == 2){
                     board[j][i] = calculated[j];
@@ -108,7 +111,6 @@ int move_block(int cnt){
     }
 
     return resultMax;
-
 }
 
 //최대 5번 이동시켜서 가장 큰 값 만들기
