@@ -7,7 +7,7 @@ LCA
 '''
 
 import sys
-sys.setrecursionlimit(1e9)
+sys.setrecursionlimit(int(1e5))
 
 n = int(input())
 parent = [0] * (n + 1)      # 각 노드의 부모 노드 정보
