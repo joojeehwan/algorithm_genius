@@ -7,14 +7,17 @@ LCA
 '''
 
 import sys
+import deque
+
 sys.setrecursionlimit(int(1e5))
 
 n = int(input())
-parent = [0] * (n + 1)      # 각 노드의 부모 노드 정보
-d = [0] * (n + 1)           # 각 노드까지의 깊이
-visited = [0] * (n + 1)     # 방문 여부
-graph = [[] for _ in range(n + 1)]
+parent = [0] * (n + 1)             # 각 노드의 부모 노드 정보
+d = [0] * (n + 1)                  # 각 노드까지의 깊이
+visited = [0] * (n + 1)            # 방문 여부
+graph = [[] for _ in range(n + 1)] # 전체 MAP
 
+#노드간 연결 초기화
 for _ in range(n - 1):
     a, b = map(int, input().split())
     graph[a].append(b)
@@ -34,6 +37,20 @@ def dfs(x, depth):
         parent[node] = x
         #재귀
         dfs(node, depth + 1)
+
+#bfs 풀이
+def bfs(x, depth):
+    queue = deque()
+    queue.append((x, depth))
+    while queue:
+        node, curr_depth = queue.popleft()
+        visited[node] = True
+        d[node] = curr_depth
+        for i in graph[node]:
+            if not visited[i]:
+                parent[i] = node
+                queue.append((i, curr_depth + 1))
+
 
 
 # 최소 공통 조상 찾기
@@ -55,11 +72,14 @@ def lca(a, b):
 
 
 dfs(1, 0)
-
+#bfs(1, 0)
 m = int(input())
 
 for _ in range(m):
     a, b = map(int, input().split())
     print(lca(a, b))
+
+
+
 
 
