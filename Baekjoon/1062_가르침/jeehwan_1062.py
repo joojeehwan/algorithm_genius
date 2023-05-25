@@ -2,13 +2,17 @@
 
 만일 K가 5 이상이라면 총 21개 중 K - 5개를 뽑는 조합의 경우와 같다.
 
-언제나 헷갈리는 비트 마스킹 풀이
 '''
+
+# https://peisea0830.tistory.com/35
+#비트 마스킹 풀이  => 콤비네이션
 from itertools import combinations
 
 n , m = map(int, input().split())
 
 words = [0] * n
+
+answer = 0
 
 for i in range(n) :
 
@@ -39,3 +43,25 @@ else:
 
     for candi in list(combinations(remain_alpha, m - 5)):
         print(candi)
+
+        res = 0
+        target = 0
+
+        for word in first_word :
+            target |= (1 <<(ord(word) - ord('a')))
+
+        for word in candi:
+            target |= (1 << ord(word) - ord('a'))
+
+        # 문제에 주어진 입력과, 내가 만든 단어 비교
+
+        for word in words :
+            if target & word == word:
+                res += 1
+
+        if answer < res:
+            answer = res
+
+print(answer)
+#https://kyun2da.github.io/2020/09/26/teaching/
+#정석 풀이 dfs
