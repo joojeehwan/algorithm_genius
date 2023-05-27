@@ -75,7 +75,7 @@ MAP = [[] for _ in range(N + 1)]
 for _ in range(N - 1):
     parent, child, value = map(int, input().split())
     MAP[parent].append((child, value))
-    MAP[child].appemd((parent, value))
+    MAP[child].append((parent, value))
 
 
 visited = [-1] * (N + 1) #1차원 배열이지, 그냥 각각의 노드들 가고, 안가고 설정하는 건데
