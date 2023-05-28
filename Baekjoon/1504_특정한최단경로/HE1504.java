@@ -104,13 +104,11 @@ public class HE1504 {
 		int v1 = Integer.parseInt(st.nextToken());
 		int v2 = Integer.parseInt(st.nextToken());
 		
-		int[] fromStart = dijkstra(1);
 		int[] fromV1 = dijkstra(v1);
 		int[] fromV2 = dijkstra(v2);
-		
 
-		int v1Tov2 = fromStart[v1] + fromV1[v2] + fromV2[N];
-		int v2Tov1 = fromStart[v2] + fromV2[v1] + fromV1[N];
+		int v1Tov2 = fromV1[1] + fromV1[v2] + fromV2[N];
+		int v2Tov1 = fromV2[1] + fromV2[v1] + fromV1[N];
 		
 		int minDist = Math.min(v1Tov2, v2Tov1);
 		System.out.println(minDist < MaxValue ? minDist : -1);		
