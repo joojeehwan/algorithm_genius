@@ -34,15 +34,10 @@ def grow() -> None:
         tree[r][c] += 1
 
     for r, c in nutri:
-        dia_tree = 0
         for d in range(1, 8, 2):
             n_row, n_col = r + dr[d], c + dc[d]
-            if not in_range(n_row, n_col):
-                continue
-            if tree[n_row][n_col] > 0:
-                dia_tree += 1
-
-        tree[r][c] += dia_tree
+            if in_range(n_row, n_col) and tree[n_row][n_col]:
+                tree[r][c] += 1
 
 
 def buy() -> List[List[int]]:
