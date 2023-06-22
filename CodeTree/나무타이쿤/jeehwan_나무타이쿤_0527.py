@@ -7,14 +7,16 @@
 
 3. 대각선 1이상 체크 후, 그 수 만큼 값 증가.
 
-4. 높이 2 이상 잘라내고, 해당 위치가 바로 다시 영양제가 있는 곳으로 기록
+4. 높이 2 이상 잘라내고, 해당 위치가 바로 다시 영양제가 있는 곳으로 기록 (영양제 있던 곳은 그 다음 영양제 위치가 될 수 없음)
     => 영양제 위치 다시 기록
 
 
-영양제의 위치가 중요하니, 해당 위치를 기록하는 배열 만들기.
-
+영양제의 위치가 중요하니, 해당 위치를 기록하는 배열 / visited 만들기.
 
 yyz = [(row1, col1), (row, col2)] 영양제 배열이 존재하는 위치 기록
+
+yyz_visited = [[Fasle] * n for _ in range(n)]
+
 
 
 첫번째 줄에는 격자의 크기 n, 리브로수를 키우는 총 년 수 m이 주어집니다.
@@ -76,53 +78,97 @@ MAP = [list(map(int, input().split())) for _ in range(n)]
 #영양제 좌표 기록, (초기 영양제의 위치는  n x n 격자의 좌하단의 4개의 칸)
 yyz = []
 
+#영양제 기록배열
+yyz_visited = [[False] * n for _ in range(n)]
+
+#문제 잙 읽기  // 변수명 귀찮아도 길게,,,! 헷갈리지 않게,, 디버깅하기 쉽게
 for row in range(n - 2, n):
     for col in range(2):
-        yyz.append((row, col))
-
-#print(yyz)
+        yyz_visited[row][col] = True
 
 
 def stepOneAndTwo(dir, power):
 
     #이동을 위한 임시배열 생성
-    tempMAP = copy.deepcopy(MAP)
+    global yyz_visited, yyz
+    #다음번 반복을 위한 초기화
+    tempVisted = [[False] * n for _ in range(n)]
+    yyz = []
 
-    #dir 방향으로, power만큼 이동 후 1씩 증가
-    for row, col in yyz:
+    # n = len(yyz)
+    # #dir 방향으로, power만큼 이동 후 1씩 증가
+    # for row, col in yyz[:]:
+    #
+    #     next_row = (n + row + dr[dir] * power) % n
+    #     next_col = (n + col + dc[dir] * power) % n
+    #     tempMAP[next_row][next_col] += 1
+    #     yyz.append((next_row, next_col))
+    #     #print(next_row, next_col)
 
-        next_row = (n + row + dr[dir]) % n
-        next_col = (m + col + dc[dir] ) % m
-        tempMAP[next_row][next_col] += 1
-
-    #복사
-    for row in range(N):
-        for col in range(N):
-            MAP[row][col] = tempMAP[row][col]
-
-
+    for row in range(n) :
+        for col in range(n):
+            if yyz_visited[row][col]:
+                next_row = (n + row + dr[dir] * power) % n
+                next_col = (n + col + dc[dir] * power) % n
+                tempVisted[next_row][next_col] = True
+                MAP[next_row][next_col] += 1
+                yyz.append((next_row, next_col))
 
 
+    yyz_visited = copy.deepcopy(tempVisted)
 
 def stepThree():
 
-    tempMAP = copy.deepcopy(MAP)
 
-    #대각선 체크 후
+    #영양제가 있는 위치, 대각선 체크
+    for row, col in yyz :
+        for dir in range(4):
+
+            next_row = row + dr_dia[dir]
+            next_col = col + dc_dia[dir]
+
+            if 0 <= next_row < n and 0 <= next_col < n and MAP[next_row][next_col] >= 1:
+                MAP[row][col] += 1
+
+
+def stepFour():
+
+
+    global yyz_visited
+
+    temp_yyz_visited = [[False] *  n for _ in range(n)]
+
+    for row in range(n):
+        for col in range(n):
+            if MAP[row][col] >= 2 and not yyz_visited[row][col]:
+                temp_yyz_visited[row][col] = True
+                MAP[row][col] -= 2
+
+
+    yyz_visited = copy.deepcopy(temp_yyz_visited)
+
 
 #시물레이션
-
 for _ in range(m):
 
     d, p = map(int, input().split())
 
-    stepOne(d, p)
+    stepOneAndTwo(d - 1, p)
 
-    #stepTwo()
+    stepThree()
 
-    #stepThree()
+    stepFour()
 
-    #stepFour()
+    debug = 1
+
+
+ans = 0
+for row in range(n):
+    for col in range(n):
+        ans += MAP[row][col]
+
+print(ans)
+
 
 
 

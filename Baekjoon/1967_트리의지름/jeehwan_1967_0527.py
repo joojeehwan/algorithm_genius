@@ -87,7 +87,7 @@ for _ in range(N - 1):
     MAP[frm].append((to, value))
     MAP[to].append((frm, value))
 
-visited = [False] * (N + 1)
+#visited = [False] * (N + 1)
 MAX_NODE = 0
 MAX_VALUE = 0
 def bfs(startNode) :
@@ -115,10 +115,11 @@ def bfs(startNode) :
                 if MAX_VALUE < (nowValue + nextValue ) :
                     MAX_VALUE = (nowValue + nextValue)
                     MAX_NODE = nextNode
+
     return MAX_VALUE, MAX_NODE
 
 
-_, start = bfs(1)
+_ , start = bfs(1)
 #visited = [False] * (N + 1)  visted배열도 bfs 안에 두면, 굳이 초기화 할 필요가 없다.
 print(bfs(start)[0])
 
