@@ -96,7 +96,7 @@ for _ in range(m):
     stop_one(d,p)
 
     stop_two()
-
+    debug = 1
 ans = 0
 
 for row in range(n):
