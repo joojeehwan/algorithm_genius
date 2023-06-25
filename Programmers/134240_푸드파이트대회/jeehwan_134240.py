@@ -7,18 +7,21 @@
 
 '''
 
-
 def solution(food):
+
     answer = ""
 
-    for i, value in enumerate(food):
+    for i, value in enumerate(food) :
 
-        if i == 0:
+        if i  == 0 :
             continue
+
         length = value // 2
 
         answer += str(i) * length
-    answer += str(0)
 
-    print(answer)
+    reverse = '0' + answer[::-1]
+
+    answer += reverse
+
     return answer
