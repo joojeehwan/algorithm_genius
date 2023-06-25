@@ -13,7 +13,7 @@ def solution(food):
 
     for i, value in enumerate(food) :
 
-        if i  == 0 :
+        if i == 0 :
             continue
 
         length = value // 2
