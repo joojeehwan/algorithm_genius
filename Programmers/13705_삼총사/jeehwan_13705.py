@@ -28,8 +28,6 @@ def solution(number):
     return answer
 
 
-print(solution([-1, 1, -1, 1] ))
-
 #3중 for문
 # 인덱스 관련 정의 예민하게
 def solution(number):
