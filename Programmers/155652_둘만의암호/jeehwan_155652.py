@@ -8,7 +8,7 @@ from collections import defaultdict
 #         return True
 #     return False
 
-def solution(s, skip, index):
+def solution1(s, skip, index):
 
     alphas = {'a': False, 'b': False, 'c': False, 'd': False, 'e': False,
               'f': False, 'g': False, 'h': False, 'i': False, 'j': False, 'k': False, 'l': False, 'm': False,
@@ -54,7 +54,7 @@ def solution(s, skip, index):
 from collections import defaultdict
 
 
-def solution(s, skip, index):
+def solution2(s, skip, index):
 
     alphas = {'a': False, 'b': False, 'c': False, 'd': False, 'e': False,
               'f': False, 'g': False, 'h': False, 'i': False, 'j': False, 'k': False, 'l': False, 'm': False,
@@ -84,7 +84,7 @@ def solution(s, skip, index):
     answer = ''
     return
 
-def solution(s, skip, index):
+def solution3(s, skip, index):
     atoz = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
             'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -101,7 +101,7 @@ def solution(s, skip, index):
 
 
 #런타임 에러
-def solution(s, skip, index):
+def solution4(s, skip, index):
     answer = ''
 
     alphas = {'a': False, 'b': False, 'c': False, 'd': False, 'e': False,
@@ -111,6 +111,7 @@ def solution(s, skip, index):
               'u': False, 'v': False, 'w': False, 'x': False, 'y': False,
               'z': False}
 
+    debug = 1
     # skip 처리
     for skiptarget in skip:
         alphas[skiptarget] = True
@@ -118,26 +119,29 @@ def solution(s, skip, index):
     # mainProcess
     for target in s:
 
-        count = 0
-        targetIndex = 0
+        count = 1
+        targetIndex = ord(target)
         cnt = 0
 
         while cnt < index:
-
-            targetIndex = ord(target) + count
-
             # skip 처리
             if alphas[chr(targetIndex)]:
                 count += 1
                 continue
 
+            debug = 1
+
+            targetIndex = ord(target) + count
+            cnt += 1
+            count += 1
+
             # z 넘어가는 경우 처리
             if targetIndex >= ord('z'):
                 targetIndex = ord(target) + count - 26
 
-            cnt += 1
-            count += 1
-
-        answer += (chr(targetIndex + 1))
+        answer += (chr(targetIndex))
 
     return answer
+
+
+print(solution4("aukks", "wbqd", 5))
