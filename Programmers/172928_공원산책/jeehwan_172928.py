@@ -2,6 +2,7 @@
 def solution(park, routes):
 
     def movement(di, po):
+        pass
 
     # 북 남 서 동
     dr = [-1, 1, 0, 1]
