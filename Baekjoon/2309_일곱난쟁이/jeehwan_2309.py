@@ -49,6 +49,6 @@ for N in range(len(available)) :
 target_list = list(available[CNT])
 target_list.sort()
 
-#정답 출력
+#정답 출력_!
 for i in range(len(target_list)) :
     print(target_list[i])
